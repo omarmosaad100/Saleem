@@ -30,7 +30,6 @@ namespace CDataAccessLayer.Data
                    .HasName("PK_PatientDrugs");
 
         }
-        public DbSet<AppUser> Users { get; set; }
         public DbSet<Patient> patients { get; set; }
         public DbSet<AppointmentDetails> AppointmentDetails { get; set; }
         public DbSet<Drug> Drugs { get; set; }

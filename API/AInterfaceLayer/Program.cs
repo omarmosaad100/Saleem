@@ -1,5 +1,3 @@
-
-using BBussinesLogicLayer.Managers;
 using CDataAccessLayer.Data;
 using CDataAccessLayer.Repos;
 using Microsoft.EntityFrameworkCore;
@@ -15,8 +13,8 @@ namespace AInterfaceLayer
             // Add services to the container.
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            //builder.Services.AddEndpointsApiExplorer();
-            //builder.Services.AddSwaggerGen();
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
 
             #region Database
             builder.Services.AddDbContext<DataContext>(options =>
@@ -26,11 +24,9 @@ namespace AInterfaceLayer
             #endregion
 
             #region Repos
-            builder.Services.AddScoped<IUsersRepo, UsersRepo>();
             #endregion
 
             #region Managers
-            builder.Services.AddScoped<IUsersManager , UsersManager>();
             #endregion
 
             #region CORS
@@ -41,11 +37,11 @@ namespace AInterfaceLayer
             var app = builder.Build();
 
             //// Configure the HTTP request pipeline.
-            //if (app.Environment.IsDevelopment())
-            //{
-            //    app.UseSwagger();
-            //    app.UseSwaggerUI();
-            //}
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            }
 
             //app.UseHttpsRedirection();
 

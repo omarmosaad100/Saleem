@@ -10,4 +10,8 @@
     <ProjectReference Include="..\CDataAccessLayer\CDataAccessLayer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Managers\" />
+  </ItemGroup>
+
 </Project>
