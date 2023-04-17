@@ -1,5 +1,6 @@
 using System.Text;
 using BBussinesLogicLayer;
+using BBussinesLogicLayer.Managers.Admin;
 using CDataAccessLayer.Data;
 using CDataAccessLayer.Repos;
 using Microsoft.AspNetCore.Identity;
@@ -30,6 +31,7 @@ namespace AInterfaceLayer
             #endregion
 
             #region Repos
+            builder.Services.AddScoped<IAdminRepo, AdminRepo>();
             #endregion
 
 
@@ -98,6 +100,7 @@ namespace AInterfaceLayer
             builder.Services.AddScoped<SignInManager<IdentityUser>>();
             builder.Services.AddScoped<RoleManager<IdentityRole>>();
 
+            builder.Services.AddScoped<IAdminManager, AdminManager>();
             #endregion
 
             #region CORS
@@ -119,7 +122,7 @@ namespace AInterfaceLayer
             app.UseAuthorization();
 
             #region CORS 
-            app.UseCors(policyBuilder => policyBuilder.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200")); 
+            app.UseCors(policyBuilder => policyBuilder.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200"));
             #endregion
 
             app.MapControllers();

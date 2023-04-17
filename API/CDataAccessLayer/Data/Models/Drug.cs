@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace CDataAccessLayer.Data.Models
@@ -19,10 +20,10 @@ namespace CDataAccessLayer.Data.Models
 
         [InverseProperty("ConflictingDrugs")]
         public virtual ICollection<Issue> ConflictedIssues { get; set; } = new HashSet<Issue>();
-
+        [JsonIgnore]
         [InverseProperty("DescribedDrugs")]
         public virtual ICollection<AppointmentDetails> Appointments { get; set; } = new HashSet<AppointmentDetails>();
-
+        [JsonIgnore]
         public virtual ICollection<PatientsDrugs> Patients { get; set; } = new HashSet<PatientsDrugs>();
 
     }
