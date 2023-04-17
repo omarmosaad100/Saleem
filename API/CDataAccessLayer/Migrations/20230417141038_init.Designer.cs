@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CDataAccessLayer.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230417124721_three.2")]
-    partial class three2
+    [Migration("20230417141038_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,36 @@ namespace CDataAccessLayer.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("AppointmentDetailsDrug", b =>
+                {
+                    b.Property<Guid>("AppointmentsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("DescribedDrugsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("AppointmentsId", "DescribedDrugsId");
+
+                    b.HasIndex("DescribedDrugsId");
+
+                    b.ToTable("AppointmentDetailsDrug");
+                });
+
+            modelBuilder.Entity("AppointmentDetailsIssue", b =>
+                {
+                    b.Property<Guid>("AppointmentsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("DiagnosedIssuesId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("AppointmentsId", "DiagnosedIssuesId");
+
+                    b.HasIndex("DiagnosedIssuesId");
+
+                    b.ToTable("AppointmentDetailsIssue");
+                });
 
             modelBuilder.Entity("CDataAccessLayer.Data.AppUser", b =>
                 {
@@ -95,19 +125,20 @@ namespace CDataAccessLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Doctor");
+                    b.ToTable("Doctors");
                 });
 
             modelBuilder.Entity("CDataAccessLayer.Data.Models.Drug", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TakingMethod")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -116,11 +147,9 @@ namespace CDataAccessLayer.Migrations
 
             modelBuilder.Entity("CDataAccessLayer.Data.Models.Issue", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -152,13 +181,42 @@ namespace CDataAccessLayer.Migrations
                     b.ToTable("patients");
                 });
 
-            modelBuilder.Entity("DrugIssue", b =>
+            modelBuilder.Entity("CDataAccessLayer.Data.Models.PatientsDrugs", b =>
                 {
-                    b.Property<int>("ConflictedIssuesId")
+                    b.Property<string>("PatientId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<Guid>("DrugId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Dosage")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TimesPerDay")
                         .HasColumnType("int");
 
-                    b.Property<int>("ConflictingDrugsId")
-                        .HasColumnType("int");
+                    b.HasKey("PatientId", "DrugId")
+                        .HasName("PK_PatientDrugs");
+
+                    b.HasIndex("DrugId");
+
+                    b.ToTable("PatientsDrugs");
+                });
+
+            modelBuilder.Entity("DrugIssue", b =>
+                {
+                    b.Property<Guid>("ConflictedIssuesId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ConflictingDrugsId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("ConflictedIssuesId", "ConflictingDrugsId");
 
@@ -169,17 +227,32 @@ namespace CDataAccessLayer.Migrations
 
             modelBuilder.Entity("DrugIssue1", b =>
                 {
-                    b.Property<int>("TreatedIssuesId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("TreatedIssuesId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("TreatmentDrugsId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("TreatmentDrugsId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("TreatedIssuesId", "TreatmentDrugsId");
 
                     b.HasIndex("TreatmentDrugsId");
 
                     b.ToTable("IssuesTreatment", (string)null);
+                });
+
+            modelBuilder.Entity("IssuePatient", b =>
+                {
+                    b.Property<Guid>("IssuesId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("PatientsId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("IssuesId", "PatientsId");
+
+                    b.HasIndex("PatientsId");
+
+                    b.ToTable("IssuePatient");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -380,6 +453,36 @@ namespace CDataAccessLayer.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("AppointmentDetailsDrug", b =>
+                {
+                    b.HasOne("CDataAccessLayer.Data.Models.AppointmentDetails", null)
+                        .WithMany()
+                        .HasForeignKey("AppointmentsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CDataAccessLayer.Data.Models.Drug", null)
+                        .WithMany()
+                        .HasForeignKey("DescribedDrugsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("AppointmentDetailsIssue", b =>
+                {
+                    b.HasOne("CDataAccessLayer.Data.Models.AppointmentDetails", null)
+                        .WithMany()
+                        .HasForeignKey("AppointmentsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CDataAccessLayer.Data.Models.Issue", null)
+                        .WithMany()
+                        .HasForeignKey("DiagnosedIssuesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("CDataAccessLayer.Data.Models.AppointmentDetails", b =>
                 {
                     b.HasOne("CDataAccessLayer.Data.Models.Doctor", "Doctor")
@@ -417,6 +520,25 @@ namespace CDataAccessLayer.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("CDataAccessLayer.Data.Models.PatientsDrugs", b =>
+                {
+                    b.HasOne("CDataAccessLayer.Data.Models.Drug", "Drug")
+                        .WithMany("Patients")
+                        .HasForeignKey("DrugId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CDataAccessLayer.Data.Models.Patient", "Patient")
+                        .WithMany("Drugs")
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Drug");
+
+                    b.Navigation("Patient");
+                });
+
             modelBuilder.Entity("DrugIssue", b =>
                 {
                     b.HasOne("CDataAccessLayer.Data.Models.Issue", null)
@@ -443,6 +565,21 @@ namespace CDataAccessLayer.Migrations
                     b.HasOne("CDataAccessLayer.Data.Models.Drug", null)
                         .WithMany()
                         .HasForeignKey("TreatmentDrugsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("IssuePatient", b =>
+                {
+                    b.HasOne("CDataAccessLayer.Data.Models.Issue", null)
+                        .WithMany()
+                        .HasForeignKey("IssuesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CDataAccessLayer.Data.Models.Patient", null)
+                        .WithMany()
+                        .HasForeignKey("PatientsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -496,6 +633,16 @@ namespace CDataAccessLayer.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("CDataAccessLayer.Data.Models.Drug", b =>
+                {
+                    b.Navigation("Patients");
+                });
+
+            modelBuilder.Entity("CDataAccessLayer.Data.Models.Patient", b =>
+                {
+                    b.Navigation("Drugs");
                 });
 #pragma warning restore 612, 618
         }

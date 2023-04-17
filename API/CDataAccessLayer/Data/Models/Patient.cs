@@ -20,5 +20,10 @@ namespace CDataAccessLayer.Data.Models
         [ForeignKey(nameof(User)), Key]
         public string Id { get; set; }
         public IdentityUser User { get; set; }
+
+        [InverseProperty("Patients")]
+        public virtual ICollection<Issue> Issues { get; set; } = new HashSet<Issue>();
+
+        public virtual ICollection<PatientsDrugs> Drugs { get; set; } = new HashSet<PatientsDrugs>();
     }
 }

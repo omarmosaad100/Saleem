@@ -24,12 +24,19 @@ namespace CDataAccessLayer.Data
                 .HasMany(d => d.ConflictedIssues)
                 .WithMany(i => i.ConflictingDrugs)
                 .UsingEntity(j => j.ToTable("Conflicts"));
+
+            builder.Entity<PatientsDrugs>()
+                   .HasKey(pd => new { pd.PatientId, pd.DrugId })
+                   .HasName("PK_PatientDrugs");
+
         }
         public DbSet<AppUser> Users { get; set; }
         public DbSet<Patient> patients { get; set; }
         public DbSet<AppointmentDetails> AppointmentDetails { get; set; }
         public DbSet<Drug> Drugs { get; set; }
         public DbSet<Issue> Issues { get; set; }
+        public DbSet<PatientsDrugs> PatientsDrugs { get; set; }
+        public DbSet<Doctor> Doctors { get; set; }
 
     }
 }
