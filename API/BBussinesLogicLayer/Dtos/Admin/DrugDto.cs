@@ -1,0 +1,13 @@
+﻿using CDataAccessLayer.Data.Enums;
+using CDataAccessLayer.Data.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BBussinesLogicLayer.Dtos
+{
+    public record DrugDto(Guid Id, string Name, 
+        DrugTakingMethod Method, Guid[] IssuesIds );
+}
