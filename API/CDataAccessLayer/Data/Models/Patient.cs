@@ -12,10 +12,11 @@ namespace CDataAccessLayer.Data.Models
 {
     public class Patient
     {
-        public int NationalID { get; set; }
+        public string NationalID { get; set; }
         public string Name { get; set; }
         public int Age { get; set; }
         public Gender Gender { get; set; }
+
 
         [ForeignKey(nameof(User)), Key]
         public string Id { get; set; }

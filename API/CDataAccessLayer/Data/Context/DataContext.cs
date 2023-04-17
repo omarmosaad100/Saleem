@@ -65,28 +65,6 @@ namespace CDataAccessLayer.Data
                 new Drug { Id = Guid.NewGuid(), Name = "Hydrocodone", TakingMethod = DrugTakingMethod.Oral },
                 new Drug { Id = Guid.NewGuid(), Name = "Fentanyl", TakingMethod = DrugTakingMethod.Injection }
             );
-//            // Associate Drugs with Issues
-//            builder.Entity<Drug>()
-//.HasMany(d => d.TreatedIssues)
-//.WithMany(i => i.TreatmentDrugs)
-//.UsingEntity(j => j.ToTable("IssuesTreatment")
-//.HasData(
-//    new { DrugsId = new Guid("b23d1c4c-4c4b-4d4b-a4f2-6c4bf6f7c9e1"), IssuesId = new Guid("04f5b7f8-1fb5-4170-9ae1-1f8d9f2adc0d") },
-//    new { DrugsId = new Guid("d3e1a64f-5c5b-44a0-9ab7-5e5d5d5f5d5f"), IssuesId = new Guid("1e719a38-8b9d-4d5f-a0a7-7d8a1e0c72eb") },
-//    new { DrugsId = new Guid("fd599d2f-4e4e-4d8b-9924-0e68b0c874e7"), IssuesId = new Guid("c6f1e40e-83ee-4b6f-a7e3-3aaf2b6f9c6c") },
-//    new { DrugsId = new Guid("fd599d2f-4e4e-4d8b-9924-0e68b0c874e7"), IssuesId = new Guid("04f5b7f8-1fb5-4170-9ae1-1f8d9f2adc0d") },
-//    new { DrugsId = new Guid("fd599d2f-4e4e-4d8b-9924-0e68b0c874e7"), IssuesId = new Guid("c6f1e40e-83ee-4b6f-a7e3-3aaf2b6f9c6c") },
-//    new { DrugsId = new Guid("fd599d2f-4e4e-4d8b-9924-0e68b0c874e7"), IssuesId = new Guid("1e719a38-8b9d-4d5f-a0a7-7d8a1e0c72eb") },
-//    new { DrugsId = new Guid("d3e1a64f-5c5b-44a0-9ab7-5e5d5d5f5d5f"), IssuesId = new Guid("c6f1e40e-83ee-4b6f-a7e3-3aaf2b6f9c6c") },
-//    new { DrugsId = new Guid("b23d1c4c-4c4b-4d4b-a4f2-6c4bf6f7c9e1"), IssuesId = new Guid("c6f1e40e-83ee-4b6f-a7e3-3aaf2b6f9c6c") },
-//    new { DrugsId = new Guid("b23d1c4c-4c4b-4d4b-a4f2-6c4bf6f7c9e1"), IssuesId = new Guid("1e719a38-8b9d-4d5f-a0a7-7d8a1e0c72eb") },
-//    new { DrugsId = new Guid("d3e1a64f-5c5b-44a0-9ab7-5e5d5d5f5d5f"), IssuesId = new Guid("04f5b7f8-1fb5-4170-9ae1-1f8d9f2adc0d") },
-//    new { DrugsId = new Guid("fd599d2f-4e4e-4d8b-9924-0e68b0c874e7"), IssuesId = new Guid("7d7887a6-1c6d-4c87-9ee4-4d4ad4d4ad4d") },
-//    new { DrugsId = new Guid("d3e1a64f-5c5b-44a0-9ab7-5e5d5d5f5d5f"), IssuesId = new Guid("7d7887a6-1c6d-4c87-9ee4-4d4ad4d4ad4d") },
-//    new { DrugsId = new Guid("b23d1c4c-4c4b-4d4b-a4f2-6c4bf6f7c9e1"), IssuesId = new Guid("7d7887a6-1c6d-4c87-9ee4-4d4ad4d4ad4d") }
-//));
-
-
         }
         public DbSet<AppUser> Users { get; set; }
         public DbSet<Patient> patients { get; set; }
