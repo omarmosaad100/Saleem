@@ -16,6 +16,7 @@ namespace CDataAccessLayer.Data.Models
         public virtual ICollection<Drug> TreatmentDrugs { get; set; } = new HashSet<Drug>();
         [InverseProperty("ConflictedIssues")]
         public virtual ICollection<Drug> ConflictingDrugs { get; set; } = new HashSet<Drug>();
-
+        [InverseProperty("DiagnosedIssues")]
+        public virtual ICollection<AppointmentDetails> Appointments { get; set; } = new HashSet<AppointmentDetails>();
     }
 }

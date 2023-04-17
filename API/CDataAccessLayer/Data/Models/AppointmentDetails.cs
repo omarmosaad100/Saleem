@@ -31,5 +31,10 @@ namespace CDataAccessLayer.Data.Models
         public string DId { get; set; }
         public Doctor Doctor { get; set; }
 
+        [InverseProperty("Appointments")]
+        public virtual ICollection<Drug> DescribedDrugs { get; set; } = new HashSet<Drug>();
+        [InverseProperty("Appointments")]
+        public virtual ICollection<Issue> DiagnosedIssues { get; set; } = new HashSet<Issue>();
+
     }
 }
