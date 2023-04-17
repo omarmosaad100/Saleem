@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace CDataAccessLayer.Migrations
 {
     /// <inheritdoc />
@@ -73,19 +75,6 @@ namespace CDataAccessLayer.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Issues", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -410,6 +399,50 @@ namespace CDataAccessLayer.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "Drugs",
+                columns: new[] { "Id", "Name", "TakingMethod" },
+                values: new object[,]
+                {
+                    { new Guid("1722353b-1136-4cfc-80f4-62e5d2703db9"), "Codeine", 0 },
+                    { new Guid("1afeca7e-1db0-42a6-9ce3-6518226c7125"), "Xanax", 0 },
+                    { new Guid("41e53da3-7229-4dc4-9e5d-5f485cc92c58"), "Ibuprofen", 0 },
+                    { new Guid("457fb061-57f0-4f0d-b4fc-0980907ce59e"), "Methadone", 0 },
+                    { new Guid("48df3cff-a436-4db7-81e4-29d6a45f034b"), "Zoloft", 0 },
+                    { new Guid("49563c11-9b80-4c75-92ee-42daad37c59b"), "Valium", 0 },
+                    { new Guid("4c60077e-da06-4515-b43a-7cef89a4cfbf"), "Fentanyl", 1 },
+                    { new Guid("504774b6-7103-427c-ba56-45ef7b9a3209"), "Amoxicillin", 0 },
+                    { new Guid("598a943d-43fa-4fd4-b41b-2bcddc8af37f"), "Epinephrine", 1 },
+                    { new Guid("5c10872b-6dfe-463e-ad0f-288a161b7d81"), "Prozac", 0 },
+                    { new Guid("6e1a3191-8d74-48da-9144-50c4ff5a9dc5"), "Oxycodone", 0 },
+                    { new Guid("89e7f9f3-5976-40c2-8e9b-381a0a21f572"), "Morphine", 1 },
+                    { new Guid("9410c4cf-eadb-49d2-b6e9-2c61b8061769"), "Paracetamol", 0 },
+                    { new Guid("a400cea9-7b01-4633-989b-7b142180a4be"), "Ventolin", 2 },
+                    { new Guid("bdbe56a1-5506-41ee-a0c1-ee6de663533e"), "Prednisone", 0 },
+                    { new Guid("c14e5e09-c9f2-4dca-9339-5e377e38f10f"), "Azithromycin", 0 },
+                    { new Guid("d4dd3b2b-eedc-47c4-bf38-3c7988ca9b0e"), "Hydrocodone", 0 },
+                    { new Guid("db29b672-5b3a-4e3f-9ba3-dfb4fa82ae0e"), "Ativan", 0 },
+                    { new Guid("f1f97818-1578-4dbc-863c-ec25dd220acb"), "Lidocaine", 3 },
+                    { new Guid("fcd97e84-04a2-45d2-bf6d-8b7646006184"), "Lorazepam", 0 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Issues",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { new Guid("32f27a9f-15c4-4a05-b13f-b53a378f9546"), "Allergies" },
+                    { new Guid("6f469697-6427-4573-80da-9b524e2dab07"), "Cough" },
+                    { new Guid("83b6e92a-a16d-46dc-aac9-bed820369f09"), "Sore throat" },
+                    { new Guid("910096b7-ab55-44ac-b583-dd816b8816a4"), "Back pain" },
+                    { new Guid("ba7b9ea0-cbe9-4464-ace7-388d3730e8a8"), "Fever" },
+                    { new Guid("c609f276-e48a-4528-85e8-2d1308d57cbf"), "Anxiety" },
+                    { new Guid("c73d279a-0053-49bc-b121-e9c104151536"), "High blood pressure" },
+                    { new Guid("ce4a6680-767f-4fae-ba19-b4b591ac5263"), "Headache" },
+                    { new Guid("d8925c40-9a83-4fdd-8af8-86efe2a47e8d"), "Joint pain" },
+                    { new Guid("e72189f1-2a55-42b5-b170-8fb6992c3b92"), "Depression" }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AppointmentDetails_DId",
                 table: "AppointmentDetails",
@@ -525,9 +558,6 @@ namespace CDataAccessLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "PatientsDrugs");
-
-            migrationBuilder.DropTable(
-                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "AppointmentDetails");
