@@ -18,19 +18,21 @@ namespace BBussinesLogicLayer.Managers.Admin
             _AdminRepo = adminRepo;
         }
 
-        public int AddNewDrug(DrugDto drug)
+        public int AddNewDrug(DrugDto drugDto)
         {
-            Drug drug1 = new Drug();
-            drug1.Name = drug.Name;
-            drug1.Id = drug.Id;
-            drug1.TakingMethod = drug.Method;
+            Drug NewDrug = new Drug();
+            NewDrug.Name = drugDto.Name;
+            NewDrug.Id = drugDto.Id;
+            NewDrug.TakingMethod = drugDto.Method;         
 
             HashSet<Issue> issues = _AdminRepo.GetIssueList();
 
-            var selectedIssues = issues.Where(i=>drug.IssuesIds.Contains(i.Id)).ToList();
-            drug1.TreatedIssues = selectedIssues;
+            var TreatedIssues = issues.Where(i=>drugDto.TreatedIssuesIds.Contains(i.Id)).ToList();
+            var ConflictedIssues = issues.Where(i => drugDto.ConflictedIssuesIds.Contains(i.Id)).ToList();
+            NewDrug.TreatedIssues = TreatedIssues;
+            NewDrug.ConflictedIssues = ConflictedIssues;
 
-           return _AdminRepo.AddDrug(drug1);
+           return _AdminRepo.AddDrug(NewDrug);
         }
     }
 }

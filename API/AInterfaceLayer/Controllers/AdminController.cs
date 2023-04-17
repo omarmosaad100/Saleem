@@ -13,22 +13,20 @@ namespace AInterfaceLayer.Controllers
     {
         private readonly IAdminManager _AdminManager;
 
-        public AdminController(IAdminManager adminManager ) {
+        public AdminController(IAdminManager adminManager)
+        {
             _AdminManager = adminManager;
         }
 
         [HttpPost]
         [Route("addDrug")]
-        public ActionResult AddNewDrug([FromBody]DrugDto drug)
+        public ActionResult AddNewDrug([FromBody] DrugDto drug)
         {
             var result = _AdminManager.AddNewDrug(drug);
-            //_logger.LogInformation(drug.ToString());
 
-            Console.WriteLine(drug.ToString());
-
-            if(result > 0)
-                return Ok();
-            else return BadRequest();
+            if (result == 0)
+                return BadRequest();
+            return Ok();
         }
 
     }
