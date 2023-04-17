@@ -4,6 +4,7 @@ using CDataAccessLayer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CDataAccessLayer.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230417123603_three.1")]
+    partial class three1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -161,7 +164,7 @@ namespace CDataAccessLayer.Migrations
 
                     b.HasIndex("ConflictingDrugsId");
 
-                    b.ToTable("Conflicts", (string)null);
+                    b.ToTable("DrugIssue");
                 });
 
             modelBuilder.Entity("DrugIssue1", b =>
@@ -176,7 +179,7 @@ namespace CDataAccessLayer.Migrations
 
                     b.HasIndex("TreatmentDrugsId");
 
-                    b.ToTable("IssuesTreatment", (string)null);
+                    b.ToTable("DrugIssue1");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

@@ -4,6 +4,7 @@ using CDataAccessLayer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CDataAccessLayer.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230417122039_two.3")]
+    partial class two3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,7 +61,7 @@ namespace CDataAccessLayer.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("Rating")
-                        .HasColumnType("decimal(2,1)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
@@ -95,38 +98,6 @@ namespace CDataAccessLayer.Migrations
                     b.ToTable("Doctor");
                 });
 
-            modelBuilder.Entity("CDataAccessLayer.Data.Models.Drug", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Drugs");
-                });
-
-            modelBuilder.Entity("CDataAccessLayer.Data.Models.Issue", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Issues");
-                });
-
             modelBuilder.Entity("CDataAccessLayer.Data.Models.Patient", b =>
                 {
                     b.Property<string>("Id")
@@ -147,36 +118,6 @@ namespace CDataAccessLayer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("patients");
-                });
-
-            modelBuilder.Entity("DrugIssue", b =>
-                {
-                    b.Property<int>("ConflictedIssuesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ConflictingDrugsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ConflictedIssuesId", "ConflictingDrugsId");
-
-                    b.HasIndex("ConflictingDrugsId");
-
-                    b.ToTable("Conflicts", (string)null);
-                });
-
-            modelBuilder.Entity("DrugIssue1", b =>
-                {
-                    b.Property<int>("TreatedIssuesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TreatmentDrugsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("TreatedIssuesId", "TreatmentDrugsId");
-
-                    b.HasIndex("TreatmentDrugsId");
-
-                    b.ToTable("IssuesTreatment", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -412,36 +353,6 @@ namespace CDataAccessLayer.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("DrugIssue", b =>
-                {
-                    b.HasOne("CDataAccessLayer.Data.Models.Issue", null)
-                        .WithMany()
-                        .HasForeignKey("ConflictedIssuesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CDataAccessLayer.Data.Models.Drug", null)
-                        .WithMany()
-                        .HasForeignKey("ConflictingDrugsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("DrugIssue1", b =>
-                {
-                    b.HasOne("CDataAccessLayer.Data.Models.Issue", null)
-                        .WithMany()
-                        .HasForeignKey("TreatedIssuesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CDataAccessLayer.Data.Models.Drug", null)
-                        .WithMany()
-                        .HasForeignKey("TreatmentDrugsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
