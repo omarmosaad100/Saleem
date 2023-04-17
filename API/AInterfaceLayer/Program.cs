@@ -1,5 +1,5 @@
 using System.Text;
-using BBussinesLogicLayer.Managers;
+using BBussinesLogicLayer;
 using CDataAccessLayer.Data;
 using CDataAccessLayer.Repos;
 using Microsoft.AspNetCore.Identity;
@@ -88,7 +88,7 @@ namespace AInterfaceLayer
 
 
             #region Managers
-            builder.Services.AddScoped<IUsersManager , UsersManager>();
+            //builder.Services.AddScoped<IUsersManager , UsersManager>();
 
             builder.Services.AddIdentity<IdentityUser, IdentityRole>()
                     .AddEntityFrameworkStores<DataContext>()
