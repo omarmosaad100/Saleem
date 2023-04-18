@@ -101,7 +101,7 @@ namespace CDataAccessLayer.Data
         public DbSet<PatientsDrugs> PatientsDrugs { get; set; }
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<License> licenses { get; set; }
-        public DbSet<NationalId> nationalIds { get; set; }
+        public DbSet<National> nationalIds { get; set; }
 
     }
 }

@@ -56,14 +56,14 @@ namespace AInterfaceLayer.Controllers
             var patientToAdd = new Patient
             {
                 User = patientIdentityToAdd,
-                NationalID = patientRegisterDto.NationalID,
+                NationalId = patientRegisterDto.NationalID,
                 Name = patientRegisterDto.Name,
                 Age = patientRegisterDto.Age,
                 Gender = patientRegisterDto.Gender
             };
             var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.NameIdentifier, patientToAdd.NationalID),
+            new Claim(ClaimTypes.NameIdentifier, patientToAdd.NationalId),
             new Claim(ClaimTypes.Role, UserRoles.Patient)
         };
 

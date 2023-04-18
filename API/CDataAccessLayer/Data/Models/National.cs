@@ -8,8 +8,8 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CDataAccessLayer.Data.Models
 {
-    public class NationalId
+    public class National
     {
-        public long Id { get; set; }
+        public string Id { get; set; }
     }
 }
