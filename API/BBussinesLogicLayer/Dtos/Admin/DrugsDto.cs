@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BBussinesLogicLayer.Dtos.Admin
 {
-    public class AllDrugsDto
+    public class DrugsDto
     {
 
         public Guid Id { get; set; }

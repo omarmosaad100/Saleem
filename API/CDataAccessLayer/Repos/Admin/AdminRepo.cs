@@ -46,7 +46,6 @@ namespace CDataAccessLayer.Repos
             return _context.Issues.ToHashSet<Issue>();
         }
 
-
         public int AddIssue(Issue issue)
         {
             if (issue != null)
@@ -66,5 +65,27 @@ namespace CDataAccessLayer.Repos
             }
             return 0;
         }
+
+        public Drug? GedDrug(Guid id)
+        {
+            return _context.Drugs
+                .Include(d => d.ConflictedIssues)
+                .Include(d => d.TreatedIssues)
+                .FirstOrDefault(d => d.Id == id);
+        }
+
+        public int DeleteDrug(Guid id)
+        {
+            var drug = _context.Drugs.FirstOrDefault(d => d.Id == id);
+
+            if (drug == null)
+            {
+                return 0;
+            }
+
+            _context.Drugs.Remove(drug);
+            return _context.SaveChanges();
+        }
+
     }
 }

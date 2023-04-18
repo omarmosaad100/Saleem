@@ -41,11 +41,11 @@ namespace BBussinesLogicLayer.Managers.Admin
             return _AdminRepo.AddDrug(NewDrug);
         }
 
-        public HashSet<AllDrugsDto> GetDrugList()
+        public HashSet<DrugsDto> GetDrugList()
         {
             var allDrugs = _AdminRepo.GetDrugList();
 
-            return _mapper.Map<HashSet<AllDrugsDto>>(allDrugs);
+            return _mapper.Map<HashSet<DrugsDto>>(allDrugs);
         }
 
         public int AddIssue(IssueDto issueDto)
@@ -53,7 +53,7 @@ namespace BBussinesLogicLayer.Managers.Admin
             if (issueDto == null)
                 return 0;
 
-            Issue newIssue = new ();
+            Issue newIssue = new();
 
             newIssue.Id = issueDto.Id;
             newIssue.Name = issueDto.Name;
@@ -67,18 +67,35 @@ namespace BBussinesLogicLayer.Managers.Admin
             if (licenseDto == null)
                 return 0;
 
-            License newLicense = new ();
+            License newLicense = new();
 
             newLicense.Id = licenseDto.Id;
             newLicense.NationalIdId = licenseDto.NationalId;
 
             return _AdminRepo.AddLicense(newLicense);
         }
+
+        public DrugsDto? GetDrug(Guid id)
+        {
+            var drug = _AdminRepo.GedDrug(id);
+
+            if (drug == null)
+                return null;
+            return _mapper.Map<DrugsDto>(drug);
+
+        }
+
+        public int DeleteDrug(Guid id)
+        {
+            return _AdminRepo.DeleteDrug(id);
+        }
+
+
     }
 }
 
 
-//public HashSet<AllDrugDto> GetDrugList()
+//public HashSet<AllDrugDto> das()
 //{
 //    HashSet<AllDrugDto> allDrugs = new HashSet<AllDrugDto>();
 //    foreach (var drug in _AdminRepo.GetDrugList())
@@ -104,3 +121,4 @@ namespace BBussinesLogicLayer.Managers.Admin
 //    }
 //    return allDrugs;
 //}
+

@@ -13,7 +13,7 @@ namespace BBussinesLogicLayer.Helpers
     {
         public AuotMapperProfile()
         {
-            CreateMap<Drug, AllDrugsDto>();
+            CreateMap<Drug, DrugsDto>();
             CreateMap<Issue, DrugConflicedIssuesDto>();
             CreateMap<Issue, DrugTreatedIssuesDto>();
         }

@@ -14,7 +14,13 @@ namespace CDataAccessLayer.Repos
         public HashSet<Issue> GetIssueList();
 
         public HashSet<Drug> GetDrugList();
+
         public int AddIssue(Issue issue);
+
         public int AddLicense(License license);
+
+        public Drug? GedDrug(Guid id);
+
+        public int DeleteDrug(Guid id);
     }
 }

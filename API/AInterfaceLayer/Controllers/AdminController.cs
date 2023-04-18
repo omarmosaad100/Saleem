@@ -30,32 +30,62 @@ namespace AInterfaceLayer.Controllers
             return Ok();
         }
 
-        //getall drugs
+        //get all drugs
         [HttpGet]
         [Route("GetAllDrugs")]
         public ActionResult GetAllDrugs()
         {
-           var drugs = _AdminManager.GetDrugList();
-            
-            if(drugs == null)
+            var drugs = _AdminManager.GetDrugList();
+
+            if (drugs == null)
                 return StatusCode(StatusCodes.Status404NotFound);
 
             return Ok(drugs);
         }
 
+        //get drug by Id  
+        [HttpGet]
+        [Route("GetDrug")]
+        public ActionResult GetDrug(Guid Id)
+        {
+            var drug = _AdminManager.GetDrug(Id);
+
+            if (drug == null)
+                return StatusCode(StatusCodes.Status404NotFound);
+
+            return Ok(drug);
+        }
         //update drug
+        //[HttpPut]
+        //[Route("AddDrug")]
+        //public ActionResult UpdateDrug([FromBody] NewDrugDto drug)
+        //{
+        //    var result = _AdminManager.AddNewDrug(drug);
+
+        //    if (result == 0)
+        //        return BadRequest();
+        //    return Ok();
+        //}
 
         //delete drug
+        [HttpDelete]
+        [Route("DeleteDrug")]
+        public ActionResult DeleteDrug(Guid Id)
+        {
+            var result = _AdminManager.DeleteDrug(Id);
 
-        //get drug by Id  
+            if (result < 1)
+                return StatusCode(StatusCodes.Status400BadRequest);
+
+            return Ok();
+        }
         #endregion
-
 
         #region Issue
 
         [HttpPost]
         [Route("AddIssue")]
-        public ActionResult AddIssue([FromBody]IssueDto issueDto)
+        public ActionResult AddIssue([FromBody] IssueDto issueDto)
         {
 
             var result = _AdminManager.AddIssue(issueDto);
@@ -73,7 +103,7 @@ namespace AInterfaceLayer.Controllers
 
         [HttpPost]
         [Route("AddLicense")]
-        public ActionResult AddLicense([FromBody]LicenseDto licenseDto)
+        public ActionResult AddLicense([FromBody] LicenseDto licenseDto)
         {
             var result = _AdminManager.AddLicense(licenseDto);
 
@@ -81,7 +111,7 @@ namespace AInterfaceLayer.Controllers
                 return BadRequest();
 
             return Ok();
-            
+
         }
 
         #endregion
