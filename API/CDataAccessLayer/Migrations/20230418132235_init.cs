@@ -57,7 +57,7 @@ namespace CDataAccessLayer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TakingMethod = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -70,11 +70,22 @@ namespace CDataAccessLayer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Issues", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "nationalIds",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_nationalIds", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -209,8 +220,8 @@ namespace CDataAccessLayer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    NationalID = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NationalID = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Age = table.Column<int>(type: "int", nullable: false),
                     Gender = table.Column<int>(type: "int", nullable: false)
                 },
@@ -274,15 +285,33 @@ namespace CDataAccessLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "licenses",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    NationalIdId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_licenses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_licenses_nationalIds_NationalIdId",
+                        column: x => x.NationalIdId,
+                        principalTable: "nationalIds",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AppointmentDetails",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Rating = table.Column<decimal>(type: "decimal(2,1)", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Comment = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    PId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    DId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    Comment = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    PId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    DId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -291,12 +320,14 @@ namespace CDataAccessLayer.Migrations
                         name: "FK_AppointmentDetails_Doctors_DId",
                         column: x => x.DId,
                         principalTable: "Doctors",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_AppointmentDetails_patients_PId",
                         column: x => x.PId,
                         principalTable: "patients",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -331,7 +362,7 @@ namespace CDataAccessLayer.Migrations
                     DrugId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Dosage = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Dosage = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     TimesPerDay = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -404,26 +435,26 @@ namespace CDataAccessLayer.Migrations
                 columns: new[] { "Id", "Name", "TakingMethod" },
                 values: new object[,]
                 {
-                    { new Guid("1722353b-1136-4cfc-80f4-62e5d2703db9"), "Codeine", 0 },
-                    { new Guid("1afeca7e-1db0-42a6-9ce3-6518226c7125"), "Xanax", 0 },
-                    { new Guid("41e53da3-7229-4dc4-9e5d-5f485cc92c58"), "Ibuprofen", 0 },
-                    { new Guid("457fb061-57f0-4f0d-b4fc-0980907ce59e"), "Methadone", 0 },
-                    { new Guid("48df3cff-a436-4db7-81e4-29d6a45f034b"), "Zoloft", 0 },
-                    { new Guid("49563c11-9b80-4c75-92ee-42daad37c59b"), "Valium", 0 },
-                    { new Guid("4c60077e-da06-4515-b43a-7cef89a4cfbf"), "Fentanyl", 1 },
-                    { new Guid("504774b6-7103-427c-ba56-45ef7b9a3209"), "Amoxicillin", 0 },
-                    { new Guid("598a943d-43fa-4fd4-b41b-2bcddc8af37f"), "Epinephrine", 1 },
-                    { new Guid("5c10872b-6dfe-463e-ad0f-288a161b7d81"), "Prozac", 0 },
-                    { new Guid("6e1a3191-8d74-48da-9144-50c4ff5a9dc5"), "Oxycodone", 0 },
-                    { new Guid("89e7f9f3-5976-40c2-8e9b-381a0a21f572"), "Morphine", 1 },
-                    { new Guid("9410c4cf-eadb-49d2-b6e9-2c61b8061769"), "Paracetamol", 0 },
-                    { new Guid("a400cea9-7b01-4633-989b-7b142180a4be"), "Ventolin", 2 },
-                    { new Guid("bdbe56a1-5506-41ee-a0c1-ee6de663533e"), "Prednisone", 0 },
-                    { new Guid("c14e5e09-c9f2-4dca-9339-5e377e38f10f"), "Azithromycin", 0 },
-                    { new Guid("d4dd3b2b-eedc-47c4-bf38-3c7988ca9b0e"), "Hydrocodone", 0 },
-                    { new Guid("db29b672-5b3a-4e3f-9ba3-dfb4fa82ae0e"), "Ativan", 0 },
-                    { new Guid("f1f97818-1578-4dbc-863c-ec25dd220acb"), "Lidocaine", 3 },
-                    { new Guid("fcd97e84-04a2-45d2-bf6d-8b7646006184"), "Lorazepam", 0 }
+                    { new Guid("0d01b00b-5c78-44a0-8006-b69d912a607e"), "Amoxicillin", 0 },
+                    { new Guid("14751a69-b8c6-4aab-a7ab-95ef2d73ad96"), "Oxycodone", 0 },
+                    { new Guid("1aa3c387-4612-409f-8a3a-ffd6363431bc"), "Prednisone", 0 },
+                    { new Guid("1f44591e-04ac-43c0-8d0e-ec8667b3a4bc"), "Fentanyl", 1 },
+                    { new Guid("349dd2fa-d79f-4c00-8295-bfb49cda2f10"), "Ibuprofen", 0 },
+                    { new Guid("3ca060d2-ec16-4a59-b2b7-bc865b3a7db2"), "Ativan", 0 },
+                    { new Guid("4b361d8d-7479-4d8d-965c-16a6e448d366"), "Morphine", 1 },
+                    { new Guid("6946defd-cdbb-4ee2-b3bc-768d4038a1fc"), "Zoloft", 0 },
+                    { new Guid("73366c7e-1e00-4888-bb12-c0bd8ec60bbd"), "Xanax", 0 },
+                    { new Guid("90366f79-2463-484e-995e-198f7f784099"), "Lidocaine", 3 },
+                    { new Guid("977c27bb-3a95-48ac-b1fb-8e4204b8dc0b"), "Azithromycin", 0 },
+                    { new Guid("9c64cd14-82b2-441e-ba44-97da0ba9689a"), "Methadone", 0 },
+                    { new Guid("a637a193-28df-407d-af72-c1724f021089"), "Paracetamol", 0 },
+                    { new Guid("cdb9763e-8869-465e-8daf-f94b1a5898ba"), "Hydrocodone", 0 },
+                    { new Guid("eb3df79f-86a3-4d2f-9775-c41bb25654c5"), "Codeine", 0 },
+                    { new Guid("ebeef964-a690-46f6-8191-da385122bd08"), "Lorazepam", 0 },
+                    { new Guid("ed0022e3-ad73-40b9-9c1f-0d232b048211"), "Ventolin", 2 },
+                    { new Guid("f696ce06-fd7a-4f83-a96b-bd61a18bf574"), "Epinephrine", 1 },
+                    { new Guid("fc99dbe2-5f32-42e7-868b-3e94f818fce6"), "Prozac", 0 },
+                    { new Guid("ff7d6239-941f-4877-a3ea-c61b3b6e4476"), "Valium", 0 }
                 });
 
             migrationBuilder.InsertData(
@@ -431,16 +462,16 @@ namespace CDataAccessLayer.Migrations
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("32f27a9f-15c4-4a05-b13f-b53a378f9546"), "Allergies" },
-                    { new Guid("6f469697-6427-4573-80da-9b524e2dab07"), "Cough" },
-                    { new Guid("83b6e92a-a16d-46dc-aac9-bed820369f09"), "Sore throat" },
-                    { new Guid("910096b7-ab55-44ac-b583-dd816b8816a4"), "Back pain" },
-                    { new Guid("ba7b9ea0-cbe9-4464-ace7-388d3730e8a8"), "Fever" },
-                    { new Guid("c609f276-e48a-4528-85e8-2d1308d57cbf"), "Anxiety" },
-                    { new Guid("c73d279a-0053-49bc-b121-e9c104151536"), "High blood pressure" },
-                    { new Guid("ce4a6680-767f-4fae-ba19-b4b591ac5263"), "Headache" },
-                    { new Guid("d8925c40-9a83-4fdd-8af8-86efe2a47e8d"), "Joint pain" },
-                    { new Guid("e72189f1-2a55-42b5-b170-8fb6992c3b92"), "Depression" }
+                    { new Guid("42a3e960-0b56-46a3-8d75-21f8f499dac8"), "Allergies" },
+                    { new Guid("6fcb5d7a-15d6-48c9-a460-0a254894806e"), "Depression" },
+                    { new Guid("71c00854-b112-4434-a122-e8e361d075e0"), "Back pain" },
+                    { new Guid("7894d126-3fff-4da0-96b3-1d33386cd558"), "Cough" },
+                    { new Guid("7b7917ce-b37b-4563-97e9-aba0592ac789"), "Anxiety" },
+                    { new Guid("87cae15b-d1a6-46d6-9bec-6fa73cd3062d"), "Sore throat" },
+                    { new Guid("9e13e162-ba9e-4cba-aaa2-3416cf75ccc0"), "Joint pain" },
+                    { new Guid("bcbd46e8-129b-4b5b-bfb3-ef25c2bd98ca"), "Headache" },
+                    { new Guid("c437b131-557f-4260-bea7-7a6e13bd02cc"), "High blood pressure" },
+                    { new Guid("f21e6f62-f7f2-44c7-831d-091148277b8d"), "Fever" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -518,6 +549,11 @@ namespace CDataAccessLayer.Migrations
                 column: "TreatmentDrugsId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_licenses_NationalIdId",
+                table: "licenses",
+                column: "NationalIdId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PatientsDrugs_DrugId",
                 table: "PatientsDrugs",
                 column: "DrugId");
@@ -557,6 +593,9 @@ namespace CDataAccessLayer.Migrations
                 name: "IssuesTreatment");
 
             migrationBuilder.DropTable(
+                name: "licenses");
+
+            migrationBuilder.DropTable(
                 name: "PatientsDrugs");
 
             migrationBuilder.DropTable(
@@ -567,6 +606,9 @@ namespace CDataAccessLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "Issues");
+
+            migrationBuilder.DropTable(
+                name: "nationalIds");
 
             migrationBuilder.DropTable(
                 name: "Drugs");

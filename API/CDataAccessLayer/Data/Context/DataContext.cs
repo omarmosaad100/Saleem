@@ -21,6 +21,12 @@ namespace CDataAccessLayer.Data
          .WithMany(i => i.TreatmentDrugs)
          .UsingEntity(j => j.ToTable("IssuesTreatment"));
 
+            builder.Entity<AppointmentDetails>()
+                .HasOne(ad => ad.Patient)
+                .WithMany(p => p.Appointments)
+                .HasForeignKey(ad => ad.PId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             builder.Entity<Drug>()
                 .HasMany(d => d.ConflictedIssues)
                 .WithMany(i => i.ConflictingDrugs)
@@ -94,6 +100,8 @@ namespace CDataAccessLayer.Data
         public DbSet<Issue> Issues { get; set; }
         public DbSet<PatientsDrugs> PatientsDrugs { get; set; }
         public DbSet<Doctor> Doctors { get; set; }
+        public DbSet<License> licenses { get; set; }
+        public DbSet<NationalId> nationalIds { get; set; }
 
     }
 }

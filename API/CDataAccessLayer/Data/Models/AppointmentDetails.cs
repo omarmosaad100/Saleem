@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -20,19 +21,25 @@ namespace CDataAccessLayer.Data.Models
         [DataType(DataType.Date)]
         public DateTime Date { get; set; }
 
+
         [MaxLength(200)]
         public string Comment { get; set; } = string.Empty;
+
 
         [ForeignKey(nameof(Patient))]
         public string PId { get; set; }
         public Patient Patient { get; set; }
 
+
         [ForeignKey(nameof(Doctor))]
         public string DId { get; set; }
         public Doctor Doctor { get; set; }
 
+
+
         [InverseProperty("Appointments")]
         public virtual ICollection<Drug> DescribedDrugs { get; set; } = new HashSet<Drug>();
+
         [InverseProperty("Appointments")]
         public virtual ICollection<Issue> DiagnosedIssues { get; set; } = new HashSet<Issue>();
 
