@@ -45,5 +45,26 @@ namespace CDataAccessLayer.Repos
         {
             return _context.Issues.ToHashSet<Issue>();
         }
+
+
+        public int AddIssue(Issue issue)
+        {
+            if (issue != null)
+            {
+                _context.Issues.Add(issue);
+                return _context.SaveChanges();
+            }
+            return 0;
+        }
+
+        public int AddLicense(License license)
+        {
+            if (license != null)
+            {
+                _context.licenses.Add(license);
+                return _context.SaveChanges();
+            }
+            return 0;
+        }
     }
 }

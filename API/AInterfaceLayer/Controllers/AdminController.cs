@@ -50,8 +50,43 @@ namespace AInterfaceLayer.Controllers
         //get drug by Id  
         #endregion
 
-        #region Doctors/Licence
+
+        #region Issue
+
+        [HttpPost]
+        [Route("AddIssue")]
+        public ActionResult AddIssue([FromBody]IssueDto issueDto)
+        {
+
+            var result = _AdminManager.AddIssue(issueDto);
+
+            if (result == 0)
+                return BadRequest();
+
+            return Ok();
+        }
+
+        #endregion
+
+        #region Licence
         //addnewLicence
+
+        [HttpPost]
+        [Route("AddLicense")]
+        public ActionResult AddLicense([FromBody]LicenseDto licenseDto)
+        {
+            var result = _AdminManager.AddLicense(licenseDto);
+
+            if (result == null)
+                return BadRequest();
+
+            return Ok();
+            
+        }
+
+        #endregion
+
+        #region Doctors/Licence
         //getAllDoctors
         #endregion
 

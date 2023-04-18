@@ -4,6 +4,7 @@ using BBussinesLogicLayer.Dtos.Admin;
 using CDataAccessLayer.Data.Enums;
 using CDataAccessLayer.Data.Models;
 using CDataAccessLayer.Repos;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,6 +46,33 @@ namespace BBussinesLogicLayer.Managers.Admin
             var allDrugs = _AdminRepo.GetDrugList();
 
             return _mapper.Map<HashSet<AllDrugsDto>>(allDrugs);
+        }
+
+        public int AddIssue(IssueDto issueDto)
+        {
+            if (issueDto == null)
+                return 0;
+
+            Issue newIssue = new ();
+
+            newIssue.Id = issueDto.Id;
+            newIssue.Name = issueDto.Name;
+
+            return _AdminRepo.AddIssue(newIssue);
+
+        }
+
+        public int AddLicense(LicenseDto licenseDto)
+        {
+            if (licenseDto == null)
+                return 0;
+
+            License newLicense = new ();
+
+            newLicense.Id = licenseDto.Id;
+            newLicense.NationalIdId = licenseDto.NationalId;
+
+            return _AdminRepo.AddLicense(newLicense);
         }
     }
 }

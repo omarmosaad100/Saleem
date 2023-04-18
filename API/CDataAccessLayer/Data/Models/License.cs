@@ -13,7 +13,7 @@ namespace CDataAccessLayer.Data.Models
 
 
         [ForeignKey(nameof(NationalId))]
-        public Guid NationalIdId { get; set; }
+        public long NationalIdId { get; set; }
         public virtual NationalId NationalId { get; set; }
     }
 }
