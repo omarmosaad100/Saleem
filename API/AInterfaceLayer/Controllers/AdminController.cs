@@ -18,8 +18,9 @@ namespace AInterfaceLayer.Controllers
             _AdminManager = adminManager;
         }
 
+        #region Drug
         [HttpPost]
-        [Route("addDrug")]
+        [Route("AddDrug")]
         public ActionResult AddNewDrug([FromBody] DrugDto drug)
         {
             var result = _AdminManager.AddNewDrug(drug);
@@ -28,6 +29,27 @@ namespace AInterfaceLayer.Controllers
                 return BadRequest();
             return Ok();
         }
+
+        //update drug
+
+        //delete drug
+
+        //getall drugs
+        [HttpGet]
+        [Route("GetAllDrugs")]
+        public ActionResult GetAllDrugs([FromBody] DrugDto drug)
+        {
+            return Ok();
+        }
+
+
+        //get drug by Id  
+        #endregion
+
+        #region Doctors/Licence
+        //addnewLicence
+        //getAllDoctors
+        #endregion
 
     }
 }
