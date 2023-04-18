@@ -34,7 +34,6 @@ namespace AInterfaceLayer
             builder.Services.AddScoped<IAdminRepo, AdminRepo>();
             #endregion
 
-
             #region Identity Managers
 
             //builder.Services.AddIdentity<IdentityRole, IdentityRole>(options =>
@@ -49,8 +48,6 @@ namespace AInterfaceLayer
             //    .AddEntityFrameworkStores<DataContext>();
 
             #endregion
-
-
 
             #region Authentication
 
@@ -87,7 +84,6 @@ namespace AInterfaceLayer
             //});
 
             #endregion
-
 
             #region Managers
             //builder.Services.AddScoped<IUsersManager , UsersManager>();

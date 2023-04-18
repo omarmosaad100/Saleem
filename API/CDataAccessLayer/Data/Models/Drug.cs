@@ -20,11 +20,12 @@ namespace CDataAccessLayer.Data.Models
 
         [InverseProperty("ConflictingDrugs")]
         public virtual ICollection<Issue> ConflictedIssues { get; set; } = new HashSet<Issue>();
-        [JsonIgnore]
+
         [InverseProperty("DescribedDrugs")]
         public virtual ICollection<AppointmentDetails> Appointments { get; set; } = new HashSet<AppointmentDetails>();
-        [JsonIgnore]
+        //[JsonIgnore]
         public virtual ICollection<PatientsDrugs> Patients { get; set; } = new HashSet<PatientsDrugs>();
 
     }
 }
+

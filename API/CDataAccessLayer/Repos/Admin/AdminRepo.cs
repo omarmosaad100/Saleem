@@ -1,9 +1,12 @@
 ﻿using CDataAccessLayer.Data;
 using CDataAccessLayer.Data.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace CDataAccessLayer.Repos
@@ -23,9 +26,19 @@ namespace CDataAccessLayer.Repos
             if (drug != null)
             {
                 _context.Drugs.Add(drug);
-               return _context.SaveChanges();
+                return _context.SaveChanges();
             }
             return 0;
+        }
+
+        public HashSet<Drug> GetDrugList()
+        {
+
+            return _context.Drugs
+                .Include(d => d.ConflictedIssues)
+                .Include(d => d.TreatedIssues)
+                .ToHashSet<Drug>();
+
         }
 
         public HashSet<Issue> GetIssueList()

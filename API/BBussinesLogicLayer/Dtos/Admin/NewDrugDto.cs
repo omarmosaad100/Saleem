@@ -8,6 +8,6 @@ using System.Threading.Tasks;
 
 namespace BBussinesLogicLayer.Dtos
 {
-    public record DrugDto(Guid Id, string Name,
+    public record NewDrugDto(Guid Id, string Name,
         DrugTakingMethod Method, Guid[] TreatedIssuesIds, Guid[] ConflictedIssuesIds);
 }

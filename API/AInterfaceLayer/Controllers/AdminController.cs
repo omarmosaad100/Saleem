@@ -21,7 +21,7 @@ namespace AInterfaceLayer.Controllers
         #region Drug
         [HttpPost]
         [Route("AddDrug")]
-        public ActionResult AddNewDrug([FromBody] DrugDto drug)
+        public ActionResult AddNewDrug([FromBody] NewDrugDto drug)
         {
             var result = _AdminManager.AddNewDrug(drug);
 
@@ -30,18 +30,22 @@ namespace AInterfaceLayer.Controllers
             return Ok();
         }
 
-        //update drug
-
-        //delete drug
-
         //getall drugs
         [HttpGet]
         [Route("GetAllDrugs")]
-        public ActionResult GetAllDrugs([FromBody] DrugDto drug)
+        public ActionResult GetAllDrugs()
         {
-            return Ok();
+           var drugs = _AdminManager.GetDrugList();
+            
+            if(drugs == null)
+                return StatusCode(StatusCodes.Status404NotFound);
+
+            return Ok(drugs);
         }
 
+        //update drug
+
+        //delete drug
 
         //get drug by Id  
         #endregion
