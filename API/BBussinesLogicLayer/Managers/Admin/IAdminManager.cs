@@ -22,5 +22,6 @@ namespace BBussinesLogicLayer.Managers.Admin
         public DrugsDto? GetDrug(Guid id);
 
         public int DeleteDrug(Guid id);
+        public int UpdateDrug(NewDrugDto drug, Guid id);
     }
 }

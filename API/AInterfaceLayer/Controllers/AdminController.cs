@@ -56,16 +56,16 @@ namespace AInterfaceLayer.Controllers
             return Ok(drug);
         }
         //update drug
-        //[HttpPut]
-        //[Route("AddDrug")]
-        //public ActionResult UpdateDrug([FromBody] NewDrugDto drug)
-        //{
-        //    var result = _AdminManager.AddNewDrug(drug);
+        [HttpPut]
+        [Route("UpdateDrug")]
+        public ActionResult UpdateDrug([FromBody] NewDrugDto drug , Guid id)
+        {
+            var result = _AdminManager.UpdateDrug(drug , id);
 
-        //    if (result == 0)
-        //        return BadRequest();
-        //    return Ok();
-        //}
+            if (result == 0)
+                return BadRequest();
+            return Ok();
+        }
 
         //delete drug
         [HttpDelete]

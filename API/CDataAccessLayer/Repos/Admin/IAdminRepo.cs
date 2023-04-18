@@ -22,5 +22,6 @@ namespace CDataAccessLayer.Repos
         public Drug? GedDrug(Guid id);
 
         public int DeleteDrug(Guid id);
+        public int UpdateDrug(Drug newDrug);
     }
 }

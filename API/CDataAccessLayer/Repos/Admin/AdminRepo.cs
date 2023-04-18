@@ -87,5 +87,21 @@ namespace CDataAccessLayer.Repos
             return _context.SaveChanges();
         }
 
+        public int UpdateDrug(Drug newDrug)
+        {
+            var OldDrug = _context.Drugs.FirstOrDefault(d => d.Id == newDrug.Id);
+            if(OldDrug == null)
+            {
+                return 0;
+            }
+
+            OldDrug.Name = newDrug.Name;
+            OldDrug.TakingMethod = newDrug.TakingMethod;
+            OldDrug.TreatedIssues = newDrug.TreatedIssues;
+            OldDrug.ConflictedIssues = newDrug.ConflictedIssues;
+
+            _context.Drugs.Update(OldDrug);
+            return _context.SaveChanges();
+        }
     }
 }

@@ -7,6 +7,7 @@ using CDataAccessLayer.Repos;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -90,7 +91,34 @@ namespace BBussinesLogicLayer.Managers.Admin
             return _AdminRepo.DeleteDrug(id);
         }
 
+        public int UpdateDrug(NewDrugDto drug, Guid id)
+        {
+            Drug NewDrug = new Drug();
+            NewDrug.Id = id;
+            NewDrug.Name = drug.Name;
+            NewDrug.TakingMethod = drug.Method;
 
+            NewDrug.TreatedIssues = new Collection<Issue>();
+            NewDrug.ConflictedIssues = new Collection<Issue>();
+
+            if (drug.TreatedIssuesIds!=null || drug.ConflictedIssuesIds != null)
+            {
+                HashSet<Issue> issues = _AdminRepo.GetIssueList();
+
+                if (drug.TreatedIssuesIds?.Length > 0)
+                {
+                    var TreatedIssues = issues.Where(i => drug.TreatedIssuesIds.Contains(i.Id)).ToList();
+                    NewDrug.TreatedIssues = TreatedIssues;
+                }
+                if (drug.ConflictedIssuesIds?.Length > 0)
+                {
+                    var ConflictedIssues = issues.Where(i => drug.ConflictedIssuesIds.Contains(i.Id)).ToList();
+                    NewDrug.ConflictedIssues = ConflictedIssues;
+                }
+            }
+
+            return _AdminRepo.UpdateDrug(NewDrug);
+        }
     }
 }
 
