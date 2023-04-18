@@ -70,7 +70,7 @@ namespace BBussinesLogicLayer.Managers.Admin
             License newLicense = new ();
 
             newLicense.Id = licenseDto.Id;
-            newLicense.NationalIdId = licenseDto.NationalId;
+            newLicense.NationalId = licenseDto.NationalId;
 
             return _AdminRepo.AddLicense(newLicense);
         }

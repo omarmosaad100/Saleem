@@ -11,6 +11,6 @@ namespace BBussinesLogicLayer.Dtos
     public class LicenseDto
     {
         public Guid Id { get; set; }
-        public long NationalId { get; set; }
+        public string NationalId { get; set; }
     }
 }

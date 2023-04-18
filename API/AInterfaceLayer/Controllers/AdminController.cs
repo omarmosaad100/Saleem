@@ -86,8 +86,9 @@ namespace AInterfaceLayer.Controllers
 
         #endregion
 
-        #region Doctors/Licence
+        #region Doctors
         //getAllDoctors
+
         #endregion
 
     }

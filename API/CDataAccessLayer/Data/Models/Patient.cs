@@ -12,7 +12,6 @@ namespace CDataAccessLayer.Data.Models
 {
     public class Patient
     {
-        public string NationalID { get; set; }
         public string Name { get; set; }
         public int Age { get; set; }
         public Gender Gender { get; set; }
@@ -32,9 +31,10 @@ namespace CDataAccessLayer.Data.Models
         public virtual ICollection<AppointmentDetails> Appointments{ get; set; } = new HashSet<AppointmentDetails>();
 
 
+        [RegularExpression("^[23]\\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\\d|3[01])\\d{7}$")]
 
-        [ForeignKey(nameof(NationalId))]
-        public long NationalIdId { get; set; }
-        public virtual NationalId nationalId { get; set; }
+        [ForeignKey(nameof(National))]
+        public string NationalId { get; set; }
+        public virtual National National { get; set; }
     }
 }

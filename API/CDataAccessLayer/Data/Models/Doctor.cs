@@ -32,8 +32,8 @@ namespace CDataAccessLayer.Data.Models
         [Required]
         [MaxLength(50)]
         [ForeignKey(nameof(License))]
-        public string LicenseNumber { get; set; } = string.Empty;
-        public License license { get; set; }
+        public Guid LicenseId { get; set; } = Guid.Empty;
+        public License License { get; set; }
 
         public virtual ICollection<AppointmentDetails> Appointments { get; set; } = new HashSet<AppointmentDetails>();
 

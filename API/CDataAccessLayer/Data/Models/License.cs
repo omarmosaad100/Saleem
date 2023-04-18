@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -12,8 +13,9 @@ namespace CDataAccessLayer.Data.Models
         public Guid Id { get; set; }
 
 
-        [ForeignKey(nameof(NationalId))]
-        public long NationalIdId { get; set; }
-        public virtual NationalId NationalId { get; set; }
+        [RegularExpression("^[23]\\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\\d|3[01])\\d{7}$")]
+        [ForeignKey(nameof(National))]
+        public string NationalId { get; set; }
+        public virtual National National { get; set; }
     }
 }
