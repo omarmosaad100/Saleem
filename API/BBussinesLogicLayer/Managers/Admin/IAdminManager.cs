@@ -13,6 +13,6 @@ namespace BBussinesLogicLayer.Managers.Admin
     {
         public int AddNewDrug(NewDrugDto drug);
 
-        public HashSet<AllDrugDto> GetDrugList();
+        public HashSet<AllDrugsDto> GetDrugList();
     }
 }

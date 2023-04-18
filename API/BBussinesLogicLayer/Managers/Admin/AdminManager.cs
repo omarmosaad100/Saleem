@@ -1,4 +1,5 @@
-﻿using BBussinesLogicLayer.Dtos;
+﻿using AutoMapper;
+using BBussinesLogicLayer.Dtos;
 using BBussinesLogicLayer.Dtos.Admin;
 using CDataAccessLayer.Data.Enums;
 using CDataAccessLayer.Data.Models;
@@ -14,10 +15,12 @@ namespace BBussinesLogicLayer.Managers.Admin
     public class AdminManager : IAdminManager
     {
         private readonly IAdminRepo _AdminRepo;
+        private readonly IMapper _mapper;
 
-        public AdminManager(IAdminRepo adminRepo)
+        public AdminManager(IAdminRepo adminRepo, IMapper mapper)
         {
             _AdminRepo = adminRepo;
+            _mapper = mapper;
         }
 
         public int AddNewDrug(NewDrugDto drugDto)
@@ -37,31 +40,39 @@ namespace BBussinesLogicLayer.Managers.Admin
             return _AdminRepo.AddDrug(NewDrug);
         }
 
-        public HashSet<AllDrugDto> GetDrugList()
+        public HashSet<AllDrugsDto> GetDrugList()
         {
-            HashSet<AllDrugDto> allDrugs = new HashSet<AllDrugDto>();
-            foreach (var drug in _AdminRepo.GetDrugList())
-            {
-                HashSet<DrugTreatedIssuesDto> DTI = new();
-                for (int i = 0; i < drug.TreatedIssues.Count; i++)
-                {
-                    var Id = drug.TreatedIssues.ElementAt(i).Id;
-                    var Name = drug.TreatedIssues.ElementAt(i).Name;
-                    DTI.Add(new DrugTreatedIssuesDto(Id, Name));
-                }
+            var allDrugs = _AdminRepo.GetDrugList();
 
-                HashSet<DrugConflicedIssuesDto> DCI = new();
-                for (int i = 0; i < drug.ConflictedIssues.Count; i++)
-                {
-                    var Id = drug.ConflictedIssues.ElementAt(i).Id;
-                    var Name = drug.ConflictedIssues.ElementAt(i).Name;
-                    DCI.Add(new DrugConflicedIssuesDto(Id, Name));
-                }
-
-
-                allDrugs.Add(new AllDrugDto(drug.Id, drug.Name, drug.TakingMethod, DTI, DCI));
-            }
-            return allDrugs;
+            return _mapper.Map<HashSet<AllDrugsDto>>(allDrugs);
         }
     }
 }
+
+
+//public HashSet<AllDrugDto> GetDrugList()
+//{
+//    HashSet<AllDrugDto> allDrugs = new HashSet<AllDrugDto>();
+//    foreach (var drug in _AdminRepo.GetDrugList())
+//    {
+//        HashSet<DrugTreatedIssuesDto> DTI = new();
+//        for (int i = 0; i < drug.TreatedIssues.Count; i++)
+//        {
+//            var Id = drug.TreatedIssues.ElementAt(i).Id;
+//            var Name = drug.TreatedIssues.ElementAt(i).Name;
+//            DTI.Add(new DrugTreatedIssuesDto(Id, Name));
+//        }
+
+//        HashSet<DrugConflicedIssuesDto> DCI = new();
+//        for (int i = 0; i < drug.ConflictedIssues.Count; i++)
+//        {
+//            var Id = drug.ConflictedIssues.ElementAt(i).Id;
+//            var Name = drug.ConflictedIssues.ElementAt(i).Name;
+//            DCI.Add(new DrugConflicedIssuesDto(Id, Name));
+//        }
+
+
+//        allDrugs.Add(new AllDrugDto(drug.Id, drug.Name, drug.TakingMethod, DTI, DCI));
+//    }
+//    return allDrugs;
+//}

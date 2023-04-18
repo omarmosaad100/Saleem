@@ -103,6 +103,10 @@ namespace AInterfaceLayer
             builder.Services.AddCors();
             #endregion
 
+            #region AutoMapper
+            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            #endregion
+
 
             var app = builder.Build();
 

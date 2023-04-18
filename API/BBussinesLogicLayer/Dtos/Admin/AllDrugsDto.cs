@@ -7,9 +7,14 @@ using System.Threading.Tasks;
 
 namespace BBussinesLogicLayer.Dtos.Admin
 {
+    public class AllDrugsDto
+    {
 
-    public record AllDrugDto(Guid Id, string Name,
-    DrugTakingMethod Method, HashSet<DrugTreatedIssuesDto> TreatedIssues,
-    HashSet<DrugConflicedIssuesDto> ConflictedIssues);
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public DrugTakingMethod Method { get; set; }
+        public HashSet<DrugTreatedIssuesDto> TreatedIssues { get; set; }
+        public HashSet<DrugConflicedIssuesDto> ConflictedIssues { get; set; }
 
+    }
 }
