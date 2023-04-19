@@ -16,6 +16,7 @@ namespace CDataAccessLayer.Data.Models
         public int Age { get; set; }
         public Gender Gender { get; set; }
 
+        public string? ImgPath { get; set; }
 
         [ForeignKey(nameof(User)), Key]
         public string Id { get; set; }
