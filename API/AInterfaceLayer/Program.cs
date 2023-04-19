@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using BBussinesLogicLayer.Managers.Patient;
 using CDataAccessLayer.Repos.Patient;
+using CDataAccessLayer.Data.Models;
+using BBussinesLogicLayer.Dtos.Patients;
 
 namespace AInterfaceLayer
 {
@@ -40,12 +42,12 @@ namespace AInterfaceLayer
 
             #region Identity Managers
 
-            //builder.Services.AddIdentity<IdentityRole, IdentityRole>(options =>
+            //builder.Services.AddIdentity<PatientRegisterDto, IdentityRole>(options =>
             //{
-            //    options.Password.RequiredUniqueChars = 3;
-            //    options.Password.RequireUppercase = false;
-            //    options.Password.RequireLowercase = false;
-            //    options.Password.RequireNonAlphanumeric = false;
+            //    options.Password.Requireduniquechars = 3;
+            //    options.Password.Requireuppercase = false;
+            //    options.Password.Requirelowercase = false;
+            //    options.Password.Requirenonalphanumeric = false;
 
             //    options.User.RequireUniqueEmail = true;
             //})
@@ -81,11 +83,11 @@ namespace AInterfaceLayer
 
             #region Authorization
 
-            //builder.Services.AddAuthorization(options =>
-            //{
-            //    options.AddPolicy("PatientData", policy => policy
-            //        .RequireClaim(ClaimTypes.Role, "Patient", "Doctor"));
-            //});
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy("PatientData", policy => policy
+                    .RequireClaim(ClaimTypes.Role, UserRoles.Patient, UserRoles.Doctor));
+            });
 
             #endregion
 

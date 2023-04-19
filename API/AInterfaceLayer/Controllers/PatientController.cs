@@ -2,6 +2,7 @@
 using BBussinesLogicLayer.Managers.Patient;
 using CDataAccessLayer.Data;
 using CDataAccessLayer.Data.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +26,8 @@ namespace AInterfaceLayer.Controllers
 
         public PatientController(IConfiguration configuration,
             UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager,
-            SignInManager<IdentityUser> signInManager, DataContext Context , IPatientService patientService)
+            SignInManager<IdentityUser> signInManager, DataContext Context , IPatientService patientService
+            )
         {
             _configuration = configuration;
             _userManager = userManager;
@@ -82,6 +84,26 @@ namespace AInterfaceLayer.Controllers
             var tokenString = tokenHandler.WriteToken(token);
 
             return new TokenDto(tokenString, expiry);
+        }
+
+        [HttpGet]
+        [Authorize]
+        [Route("Appointment")]
+        public async Task< ActionResult<AppointmentDetails>> GetAppointments()
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            //var result = _patientService.GetAllAppointments()
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null)
+            {
+                return BadRequest("User ID claim not found.");
+            }
+
+
+            return Ok(user);
+
         }
 
 
