@@ -36,6 +36,19 @@ namespace CDataAccessLayer.Data
                    .HasKey(pd => new { pd.PatientId, pd.DrugId })
                    .HasName("PK_PatientDrugs");
 
+            builder.Entity<National>().HasData(
+                new National { Id = "29708170100000" },
+                new National { Id = "29708170100001" },
+                new National { Id = "29708170100002" },
+                new National { Id = "29708170100003" },
+                new National { Id = "29708170100004" },
+                new National { Id = "29708170100005" },
+                new National { Id = "29708170100006" },
+                new National { Id = "29708170100007" },
+                new National { Id = "29708170100008" },
+                new National { Id = "29708170100009" }
+                );
+
             builder.Entity<Issue>().HasData(
                 new Issue { Id = Guid.NewGuid(), Name = "Headache" },
                 new Issue { Id = Guid.NewGuid(), Name = "Fever" },
