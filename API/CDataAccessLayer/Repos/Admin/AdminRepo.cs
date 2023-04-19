@@ -21,6 +21,8 @@ namespace CDataAccessLayer.Repos
             _context = context;
         }
 
+
+        #region Drug
         public int AddDrug(Drug drug)
         {
             if (drug != null)
@@ -39,31 +41,6 @@ namespace CDataAccessLayer.Repos
                 .Include(d => d.TreatedIssues)
                 .ToHashSet<Drug>();
 
-        }
-
-        public HashSet<Issue> GetIssueList()
-        {
-            return _context.Issues.ToHashSet<Issue>();
-        }
-
-        public int AddIssue(Issue issue)
-        {
-            if (issue != null)
-            {
-                _context.Issues.Add(issue);
-                return _context.SaveChanges();
-            }
-            return 0;
-        }
-
-        public int AddLicense(License license)
-        {
-            if (license != null)
-            {
-                _context.licenses.Add(license);
-                return _context.SaveChanges();
-            }
-            return 0;
         }
 
         public Drug? GedDrug(Guid id)
@@ -90,7 +67,7 @@ namespace CDataAccessLayer.Repos
         public int UpdateDrug(Drug newDrug)
         {
             var OldDrug = _context.Drugs.FirstOrDefault(d => d.Id == newDrug.Id);
-            if(OldDrug == null)
+            if (OldDrug == null)
             {
                 return 0;
             }
@@ -103,5 +80,62 @@ namespace CDataAccessLayer.Repos
             _context.Drugs.Update(OldDrug);
             return _context.SaveChanges();
         }
+        #endregion
+
+        #region Issues
+        public HashSet<Issue> GetIssueList()
+        {
+            return _context.Issues.ToHashSet<Issue>();
+        }
+
+        public int AddIssue(Issue issue)
+        {
+            if (issue != null)
+            {
+                _context.Issues.Add(issue);
+                return _context.SaveChanges();
+            }
+            return 0;
+        }
+        #endregion
+
+        #region Licenses
+        public int AddLicense(License license)
+        {
+            if (license != null)
+            {
+                _context.licenses.Add(license);
+                return _context.SaveChanges();
+            }
+            return 0;
+        }
+
+
+        #endregion
+
+        #region Doctors
+        public HashSet<Data.Models.Doctor> GetAllDoctors()
+        {
+            return _context.Doctors.ToHashSet();
+        }
+
+        public int DeleteDoctor(string id)
+        {
+            var doctor = _context.Doctors.FirstOrDefault(d => d.Id == id);
+            Guid? licenseId = doctor?.LicenseId;
+            var license = _context.licenses.FirstOrDefault(l => l.Id == licenseId);
+
+            if (doctor == null)
+            {
+                return 0;
+            }
+
+            _context.Doctors.Remove(doctor);
+            _context.licenses.Remove(license!);
+            return _context.SaveChanges();
+        }
+
+
+        #endregion
     }
 }
