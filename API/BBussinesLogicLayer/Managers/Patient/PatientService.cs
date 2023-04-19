@@ -38,6 +38,13 @@ namespace BBussinesLogicLayer.Managers.Patient
         {
 
             var NationalIdSelcted = _patientRepo.GetNational(patientRegisterDto.NationalID);
+            IdentityResult result2 = new();
+            if(NationalIdSelcted == null)
+            {
+                var errors = new List<IdentityError>();
+                    errors.Add(new IdentityError { Code = "National Id", Description = "This National ID don’t exist in our Database" });
+                return IdentityResult.Failed(errors.ToArray());
+            }
 
 
             var patientIdentityToAdd = new IdentityUser()
@@ -50,11 +57,7 @@ namespace BBussinesLogicLayer.Managers.Patient
             IdentityResult result = await _userManager.CreateAsync(patientIdentityToAdd, patientRegisterDto.Password);
             if (!result.Succeeded)
             {
-                var errors = new List<IdentityError>();
-                if (NationalIdSelcted == null)
-                    errors.Add(new IdentityError { Code = "National Id", Description = "This National ID don’t exist in our Database" });
-                errors.AddRange(result.Errors);
-                return IdentityResult.Failed(errors.ToArray());
+                return result;
             }
 
             var roleExists = await _roleManager.RoleExistsAsync(UserRoles.Patient);
