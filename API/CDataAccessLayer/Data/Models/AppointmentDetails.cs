@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CDataAccessLayer.Data.Enums;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -42,6 +43,11 @@ namespace CDataAccessLayer.Data.Models
 
         [InverseProperty("Appointments")]
         public virtual ICollection<Issue> DiagnosedIssues { get; set; } = new HashSet<Issue>();
+
+
+        [Required]
+        [EnumDataType(typeof(Specialization))]
+        public Specialization Specialization { get; set; }
 
     }
 }

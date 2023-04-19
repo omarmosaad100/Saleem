@@ -4,6 +4,7 @@ using CDataAccessLayer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CDataAccessLayer.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230418205833_docSpec")]
+    partial class docSpec
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -348,48 +351,6 @@ namespace CDataAccessLayer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("nationalIds");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "29708170100000"
-                        },
-                        new
-                        {
-                            Id = "29708170100001"
-                        },
-                        new
-                        {
-                            Id = "29708170100002"
-                        },
-                        new
-                        {
-                            Id = "29708170100003"
-                        },
-                        new
-                        {
-                            Id = "29708170100004"
-                        },
-                        new
-                        {
-                            Id = "29708170100005"
-                        },
-                        new
-                        {
-                            Id = "29708170100006"
-                        },
-                        new
-                        {
-                            Id = "29708170100007"
-                        },
-                        new
-                        {
-                            Id = "29708170100008"
-                        },
-                        new
-                        {
-                            Id = "29708170100009"
-                        });
                 });
 
             modelBuilder.Entity("CDataAccessLayer.Data.Models.Patient", b =>
@@ -402,9 +363,6 @@ namespace CDataAccessLayer.Migrations
 
                     b.Property<int>("Gender")
                         .HasColumnType("int");
-
-                    b.Property<string>("ImgPath")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()

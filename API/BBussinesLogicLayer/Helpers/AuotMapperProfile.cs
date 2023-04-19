@@ -16,6 +16,7 @@ namespace BBussinesLogicLayer.Helpers
             CreateMap<Drug, DrugsDto>();
             CreateMap<Issue, DrugConflicedIssuesDto>();
             CreateMap<Issue, DrugTreatedIssuesDto>();
+            CreateMap<Doctor, DoctorDto>();
         }
     }
 }

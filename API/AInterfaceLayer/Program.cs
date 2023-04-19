@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using BBussinesLogicLayer.Managers.Patient;
+using CDataAccessLayer.Repos.Patient;
 
 namespace AInterfaceLayer
 {
@@ -32,6 +34,8 @@ namespace AInterfaceLayer
 
             #region Repos
             builder.Services.AddScoped<IAdminRepo, AdminRepo>();
+            builder.Services.AddScoped<IPatientService, PatientService>();
+            builder.Services.AddScoped<IPatientRepo, PatientRepe>();
             #endregion
 
             #region Identity Managers

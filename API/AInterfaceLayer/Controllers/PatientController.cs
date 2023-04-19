@@ -1,4 +1,5 @@
 ﻿using BBussinesLogicLayer.Dtos.Patients;
+using BBussinesLogicLayer.Managers.Patient;
 using CDataAccessLayer.Data;
 using CDataAccessLayer.Data.Models;
 using Microsoft.AspNetCore.Http;
@@ -20,56 +21,27 @@ namespace AInterfaceLayer.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly DataContext _Context;
+        private readonly IPatientService _patientService;
 
         public PatientController(IConfiguration configuration,
             UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager,
-            SignInManager<IdentityUser> signInManager, DataContext Context)
+            SignInManager<IdentityUser> signInManager, DataContext Context , IPatientService patientService)
         {
             _configuration = configuration;
             _userManager = userManager;
             _roleManager = roleManager;
             _signInManager = signInManager;
             _Context = Context;
+            _patientService = patientService;
         }
 
         [HttpPost]
         [Route("Register")]
         public async Task<ActionResult> Register(PatientRegisterDto patientRegisterDto)
         {
-            var patientIdentityToAdd = new IdentityUser() {UserName= patientRegisterDto.NationalID, Email = patientRegisterDto.Email, PhoneNumber = patientRegisterDto.Mobile };
-
-            var result = await _userManager.CreateAsync(patientIdentityToAdd, patientRegisterDto.Password);
+            IdentityResult result = await _patientService.CreateAccountAsync(patientRegisterDto);
             if (!result.Succeeded)
-            {
                 return BadRequest(result.Errors);
-            }
-
-            var roleExists = await _roleManager.RoleExistsAsync(UserRoles.Patient);
-            if (!roleExists)
-            {
-                var newRole = new IdentityRole(UserRoles.Patient);
-                await _roleManager.CreateAsync(newRole);
-            }
-
-            await _userManager.AddToRoleAsync(patientIdentityToAdd, UserRoles.Patient);
-
-            var patientToAdd = new Patient
-            {
-                User = patientIdentityToAdd,
-                NationalId = patientRegisterDto.NationalID,
-                Name = patientRegisterDto.Name,
-                Age = patientRegisterDto.Age,
-                Gender = patientRegisterDto.Gender
-            };
-            var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.NameIdentifier, patientToAdd.NationalId),
-            new Claim(ClaimTypes.Role, UserRoles.Patient)
-        };
-
-            await _userManager.AddClaimsAsync(patientIdentityToAdd, claims);
-            _Context.patients.Add(patientToAdd);
-            await _Context.SaveChangesAsync();
             return NoContent();
         }
 
@@ -116,3 +88,45 @@ namespace AInterfaceLayer.Controllers
 
     }
 }
+#region Old Register
+//[HttpPost]
+//[Route("Register")]
+//public async Task<ActionResult> Register(PatientRegisterDto patientRegisterDto)
+//{
+//    var patientIdentityToAdd = new IdentityUser() { UserName = patientRegisterDto.NationalID, Email = patientRegisterDto.Email, PhoneNumber = patientRegisterDto.Mobile };
+
+//    var result = await _userManager.CreateAsync(patientIdentityToAdd, patientRegisterDto.Password);
+//    if (!result.Succeeded)
+//    {
+//        return BadRequest(result.Errors);
+//    }
+
+//    var roleExists = await _roleManager.RoleExistsAsync(UserRoles.Patient);
+//    if (!roleExists)
+//    {
+//        var newRole = new IdentityRole(UserRoles.Patient);
+//        await _roleManager.CreateAsync(newRole);
+//    }
+
+//    await _userManager.AddToRoleAsync(patientIdentityToAdd, UserRoles.Patient);
+
+//    var patientToAdd = new Patient
+//    {
+//        User = patientIdentityToAdd,
+//        NationalId = patientRegisterDto.NationalID,
+//        Name = patientRegisterDto.Name,
+//        Age = patientRegisterDto.Age,
+//        Gender = patientRegisterDto.Gender
+//    };
+//    var claims = new List<Claim>
+//{
+//    new Claim(ClaimTypes.NameIdentifier, patientToAdd.NationalId),
+//    new Claim(ClaimTypes.Role, UserRoles.Patient)
+//};
+
+//    await _userManager.AddClaimsAsync(patientIdentityToAdd, claims);
+//    _Context.patients.Add(patientToAdd);
+//    await _Context.SaveChangesAsync();
+//    return NoContent();
+//} 
+#endregion
