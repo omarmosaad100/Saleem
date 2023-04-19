@@ -45,7 +45,7 @@ namespace AInterfaceLayer.Controllers
 
         //get drug by Id  
         [HttpGet]
-        [Route("GetDrug")]
+        [Route("GetDrug/{Id}")]
         public ActionResult GetDrug(Guid Id)
         {
             var drug = _AdminManager.GetDrug(Id);
@@ -57,7 +57,7 @@ namespace AInterfaceLayer.Controllers
         }
         //update drug
         [HttpPut]
-        [Route("UpdateDrug")]
+        [Route("UpdateDrug/{Id}")]
         public ActionResult UpdateDrug([FromBody] NewDrugDto drug , Guid id)
         {
             var result = _AdminManager.UpdateDrug(drug , id);
@@ -69,7 +69,7 @@ namespace AInterfaceLayer.Controllers
 
         //delete drug
         [HttpDelete]
-        [Route("DeleteDrug")]
+        [Route("DeleteDrug/{Id}")]
         public ActionResult DeleteDrug(Guid Id)
         {
             var result = _AdminManager.DeleteDrug(Id);
