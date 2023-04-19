@@ -39,10 +39,10 @@ namespace BBussinesLogicLayer.Managers.Patient
 
             var NationalIdSelcted = _patientRepo.GetNational(patientRegisterDto.NationalID);
             IdentityResult result2 = new();
-            if(NationalIdSelcted == null)
+            if (NationalIdSelcted == null)
             {
                 var errors = new List<IdentityError>();
-                    errors.Add(new IdentityError { Code = "National Id", Description = "This National ID don’t exist in our Database" });
+                errors.Add(new IdentityError { Code = "National Id", Description = "This National ID don’t exist in our Database" });
                 return IdentityResult.Failed(errors.ToArray());
             }
 
