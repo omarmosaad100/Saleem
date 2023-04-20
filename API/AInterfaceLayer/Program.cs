@@ -34,22 +34,25 @@ namespace AInterfaceLayer
 
             #region Repos
             builder.Services.AddScoped<IAdminRepo, AdminRepo>();
-            builder.Services.AddScoped<IPatientService, PatientService>();
             builder.Services.AddScoped<IPatientRepo, PatientRepe>();
             #endregion
 
             #region Identity Managers
 
-            //builder.Services.AddIdentity<IdentityRole, IdentityRole>(options =>
-            //{
-            //    options.Password.RequiredUniqueChars = 3;
-            //    options.Password.RequireUppercase = false;
-            //    options.Password.RequireLowercase = false;
-            //    options.Password.RequireNonAlphanumeric = false;
+            builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<DataContext>()
+                .AddDefaultTokenProviders();
 
-            //    options.User.RequireUniqueEmail = true;
-            //})
-            //    .AddEntityFrameworkStores<DataContext>();
+            builder.Services.AddScoped<UserManager<IdentityUser>>();
+            builder.Services.AddScoped<SignInManager<IdentityUser>>();
+            builder.Services.AddScoped<RoleManager<IdentityRole>>();
+
+            #endregion
+
+            #region Managers
+
+            builder.Services.AddScoped<IAdminManager, AdminManager>();
+            builder.Services.AddScoped<IPatientService, PatientService>();
 
             #endregion
 
@@ -58,12 +61,12 @@ namespace AInterfaceLayer
             builder.Services.AddAuthentication(options =>
             {
                 //Used Authentication Scheme
-                options.DefaultAuthenticateScheme = "CoolAuthentication";
+                options.DefaultAuthenticateScheme = "Authentication";
 
                 //Used Challenge Authentication Scheme
-                options.DefaultChallengeScheme = "CoolAuthentication";
+                options.DefaultChallengeScheme = "Authentication";
             })
-                .AddJwtBearer("CoolAuthentication", options =>
+                .AddJwtBearer("Authentication", options =>
                 {
                     var secretKeyString = builder.Configuration.GetValue<string>("SecretKey") ?? string.Empty;
                     var secretKeyInBytes = Encoding.ASCII.GetBytes(secretKeyString);
@@ -81,26 +84,22 @@ namespace AInterfaceLayer
 
             #region Authorization
 
-            //builder.Services.AddAuthorization(options =>
-            //{
-            //    options.AddPolicy("PatientData", policy => policy
-            //        .RequireClaim(ClaimTypes.Role, "Patient", "Doctor"));
-            //});
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Patient", policy =>
+                    policy.RequireClaim(ClaimTypes.Role, "Patient")
 
-            #endregion
+                  );
 
-            #region Managers
-            //builder.Services.AddScoped<IUsersManager , UsersManager>();
+                options.AddPolicy("Admin", policy =>
+                    policy.RequireClaim(ClaimTypes.Role, "Admin")
 
-            builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-                    .AddEntityFrameworkStores<DataContext>()
-                    .AddDefaultTokenProviders();
+                  );
 
-            builder.Services.AddScoped<UserManager<IdentityUser>>();
-            builder.Services.AddScoped<SignInManager<IdentityUser>>();
-            builder.Services.AddScoped<RoleManager<IdentityRole>>();
+                options.AddPolicy("Doctor", policy =>
+                    policy.RequireClaim(ClaimTypes.Role, "Doctor"));
+            });
 
-            builder.Services.AddScoped<IAdminManager, AdminManager>();
             #endregion
 
             #region CORS
@@ -111,6 +110,7 @@ namespace AInterfaceLayer
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             #endregion
 
+       
 
             var app = builder.Build();
 
