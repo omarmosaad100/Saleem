@@ -1,12 +1,14 @@
-﻿using BBussinesLogicLayer.Dtos.Patients;
+﻿using AutoMapper;
+using BBussinesLogicLayer.Dtos.Admin;
+using BBussinesLogicLayer.Dtos.Patients;
 using BBussinesLogicLayer.Managers.Patient;
-using CDataAccessLayer.Data;
 using CDataAccessLayer.Data.Models;
 using CDataAccessLayer.Repos.Patient;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using System.Collections.Generic;
 using System.Diagnostics.Metrics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -19,20 +21,22 @@ namespace BBussinesLogicLayer.Managers.Patient
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly DataContext _dbContext;
+        //private readonly DataContext _dbContext;
         private readonly IPatientRepo _patientRepo;
+        private readonly IMapper _mapper;
 
         public PatientService(UserManager<IdentityUser> userManager,
             RoleManager<IdentityRole> roleManager,
-            DataContext dbContext,
-            IPatientRepo patientRepo)
+            IPatientRepo patientRepo,
+            IMapper mapper
+
+         )
         {
             _userManager = userManager;
             _roleManager = roleManager;
-            _dbContext = dbContext;
             _patientRepo = patientRepo;
+            _mapper = mapper;
         }
-
 
         async Task<IdentityResult> IPatientService.CreateAccountAsync(PatientRegisterDto patientRegisterDto)
         {
@@ -84,9 +88,101 @@ namespace BBussinesLogicLayer.Managers.Patient
         };
 
             await _userManager.AddClaimsAsync(patientIdentityToAdd, claims);
-            _dbContext.patients.Add(patientToAdd);
-            await _dbContext.SaveChangesAsync();
+            //_dbContext.patients.Add(patientToAdd);
+            //await _dbContext.SaveChangesAsync();
+            _patientRepo.AddNewPatient(patientToAdd);
             return result;
         }
+
+        public PatientDTO? GetPatientDetails(string id)
+        {
+            CDataAccessLayer.Data.Models.Patient? patientData = _patientRepo.GetPatientDetails(id);
+            if (patientData is null)
+            {
+                return null;
+            }
+            return _mapper.Map<PatientDTO>(patientData);
+
+        }
+
+        public PatientDTO? EditProrfile(string Id,  EditProfileDTO newPatientDataDTO)
+        {
+            CDataAccessLayer.Data.Models.Patient newPatientData = new()
+            {
+                Name = newPatientDataDTO.Name,
+                Age = newPatientDataDTO.Age,
+                Gender = newPatientDataDTO.Gender
+            };
+            CDataAccessLayer.Data.Models.Patient? patientData = _patientRepo.EditProrfile(Id , newPatientData);
+            if (patientData is null)
+            {
+                return null;
+            }
+            return _mapper.Map<PatientDTO>(patientData);
+        }
+        public HashSet<PatientDrugsDTO> GetPatientDrugs(string id)
+        {
+            HashSet<PatientsDrugs> patientDrugs = _patientRepo.GetPatientDrugs(id);
+
+            HashSet<PatientDrugsDTO> patientDrugsDto = new HashSet<PatientDrugsDTO>();
+
+            foreach (PatientsDrugs drugs in patientDrugs)
+            {
+                patientDrugsDto.Add(
+                    new PatientDrugsDTO
+                    {
+                        Dosage = drugs.Dosage,
+                        StartDate = drugs.StartDate,
+                        EndDate = drugs.EndDate,
+                        Name = drugs.Drug.Name,
+                        TimesPerDay = drugs.TimesPerDay,
+                        DrugId= drugs.DrugId
+                    }
+                );
+            }
+           return patientDrugsDto;
+            
+
+        }
+
+
+        public HashSet<DoctorDataDTO> GetVisitedDoctorsInfo(string patientId)
+        {
+            HashSet<AppointmentDetails> DoctorsInfo = _patientRepo.GetVisitedDoctorsInfo(patientId);
+
+            HashSet<DoctorDataDTO> DoctorsInfoDto = new HashSet<DoctorDataDTO>();
+
+            foreach (AppointmentDetails appointment in DoctorsInfo)
+            {
+                DoctorsInfoDto.Add(
+                    new DoctorDataDTO
+                    {
+                       Name = appointment.Doctor.Name,
+                       Gender= appointment.Doctor.Gender,
+                       Specialization  = appointment.Doctor.Specialization
+                    }
+                );
+            }
+            return DoctorsInfoDto;
+        }
+
+        public AppointmentDetailsDTO? GetAppointmentDetailsOfSpecificDoc(string patientId, string DocID)
+        {
+            AppointmentDetails? appointmentDetails = _patientRepo.GetAppointmentDetailsOfSpecificDoc(patientId, DocID);
+
+            if(appointmentDetails is null)
+            {
+                return null;
+            }
+            return _mapper.Map<AppointmentDetailsDTO>(appointmentDetails);      
+        }
+
+
+        public int? RateDoctor(string patientId, string doctorId, decimal rating)
+        {
+            return _patientRepo.RateDoctor(patientId, doctorId, rating);
+        }
+
+       
     }
 }

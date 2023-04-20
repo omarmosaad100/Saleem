@@ -2,6 +2,7 @@
 using BBussinesLogicLayer.Managers.Patient;
 using CDataAccessLayer.Data;
 using CDataAccessLayer.Data.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -82,6 +83,101 @@ namespace AInterfaceLayer.Controllers
             var tokenString = tokenHandler.WriteToken(token);
 
             return new TokenDto(tokenString, expiry);
+        }
+
+
+        [HttpGet]
+        [Authorize(Policy = "Patient")]
+        [Route("GetPatientDetails")]
+
+        public ActionResult<PatientDTO> GetPatientData(string id)
+        {
+           PatientDTO? patientDTO = _patientService.GetPatientDetails(id);
+            if(patientDTO is null)
+            {
+                return Unauthorized(new { message = "Patient Not Found" });
+            }
+            return patientDTO;
+        }
+
+
+
+        [HttpPut]
+        //[Authorize(Policy = "Patient")]
+        [Route("EditPatienProfile")]
+
+        public ActionResult<PatientDTO> EditPatienProfile(string id , EditProfileDTO editProfileDTO)
+        {
+            PatientDTO? editProfileDto = _patientService.EditProrfile(id , editProfileDTO);
+            if (editProfileDto is null)
+            {
+                return Unauthorized(new { message = "Patient Not Found" });
+            }
+            return editProfileDto;
+        }
+
+
+
+        [HttpGet]
+        [Authorize(Policy = "Patient")]
+        [Route("GetPatientDrugs")]
+
+        public ActionResult<HashSet<PatientDrugsDTO>> GetPatientDrugs(string id)
+        {
+            HashSet<PatientDrugsDTO> patientDrugs = _patientService.GetPatientDrugs(id);
+            if(patientDrugs is null)
+            {
+                return BadRequest(new { message = "Patient doesn't have Drugs yet.. " });
+            }
+            return patientDrugs;
+        }
+
+
+        [HttpGet]
+        [Authorize(Policy = "Patient")]
+        [Route("GetDataOFVisitedDoctors")]
+
+        public ActionResult<HashSet<DoctorDataDTO>> GetVisitedDoctorsData(string patientId)
+        {
+            HashSet<DoctorDataDTO> doctorDataDTO = _patientService.GetVisitedDoctorsInfo(patientId);
+            if (doctorDataDTO is null)
+            {
+                return BadRequest(new { message = "Patien id not valid" });
+            }
+            if(doctorDataDTO.Count == 0)
+                return BadRequest(new { message = "Patient doesn't have any appointment with Doctors .. " });
+
+            return doctorDataDTO;
+        }
+
+
+        [HttpGet]
+        [Authorize(Policy = "Patient")]
+        [Route("GetAppointmentDetails")]
+
+        public ActionResult<AppointmentDetailsDTO> GetAppointmentDetailsOfSpecificDoc(string patientId  , string docId)
+        {
+            AppointmentDetailsDTO? appointmentDetailsDTO = _patientService.GetAppointmentDetailsOfSpecificDoc(patientId , docId);
+            if (appointmentDetailsDTO is null)
+            {
+                return BadRequest(new { message = "Patient id or Doctor id are not valid ❌" });
+            }
+            return appointmentDetailsDTO;
+        }
+
+
+        [HttpPost]
+        //[Authorize(Policy = "Patient")]
+        [Route("RateDoctor")]
+
+        public ActionResult RateDoctor(string patientId, string docId, decimal rating)
+        {
+            int? rateDoctor = _patientService.RateDoctor(patientId, docId, rating);
+            if (rateDoctor is null)
+            {
+                return BadRequest(new { message = "Patient id or Doctor id are not valid" });
+            }
+            return Ok(new {message= "Rating Doctor Successfully ✅"});
         }
 
 
