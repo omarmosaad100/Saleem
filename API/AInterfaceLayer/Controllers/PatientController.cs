@@ -107,7 +107,6 @@ public class PatientController : ControllerBase
     [HttpPut]
     [Authorize(Policy = "Patient")]
     [Route("EditPatienProfile")]
-
     public ActionResult<PatientDTO> EditPatienProfile(EditProfileDTO editProfileDTO)
     {
         string? patientId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -126,7 +125,6 @@ public class PatientController : ControllerBase
     [HttpGet]
     [Authorize(Policy = "Patient")]
     [Route("GetPatientDrugs")]
-
     public ActionResult<HashSet<PatientDrugsDTO>> GetPatientDrugs()
     {
         string? patientId = User.FindFirstValue(ClaimTypes.NameIdentifier);
