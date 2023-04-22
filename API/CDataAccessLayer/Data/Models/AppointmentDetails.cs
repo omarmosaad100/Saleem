@@ -29,12 +29,12 @@ namespace CDataAccessLayer.Data.Models
 
         [ForeignKey(nameof(Patient))]
         public string PId { get; set; }
-        public Patient Patient { get; set; }
+        public virtual Patient Patient { get; set; }
 
 
         [ForeignKey(nameof(Doctor))]
         public string DId { get; set; }
-        public Doctor Doctor { get; set; }
+        public virtual Doctor Doctor { get; set; }
 
 
 

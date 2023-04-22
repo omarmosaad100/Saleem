@@ -1,12 +1,26 @@
-﻿using System;
+﻿using CDataAccessLayer.Data.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CDataAccessLayer.Repos.Doctor
+namespace CDataAccessLayer.Repos
 {
-    internal interface IDoctorRepo
+    public interface IDoctorRepo
     {
+        //public HashSet<AppointmentDetails> GetAppointmentsByNid(int nid);
+        
+        //public Doctor GetMyInformation(int did);
+
+        public int AddAppointment(AppointmentDetails appointmentDetails);
+
+        public HashSet<AppointmentDetails> GetAppointmentsByNid(string nid);
+
+        public Doctor GetDoctorProfileById(string did);
+
+        public bool DeleteIssueByPidAndIssueName(string pid, string name);
+
+        public Drug GetDrugRecommendation(string issueName, string pid);
     }
 }
