@@ -75,6 +75,7 @@ namespace BBussinesLogicLayer.Managers.Patient
 
             CDataAccessLayer.Data.Models.Patient patientToAdd = new()
             {
+                Id = patientIdentityToAdd.Id,
                 User = patientIdentityToAdd,
                 NationalId = patientRegisterDto.NationalID,
                 Name = patientRegisterDto.Name,
@@ -83,7 +84,7 @@ namespace BBussinesLogicLayer.Managers.Patient
             };
             var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.NameIdentifier, patientToAdd.NationalId),
+            new Claim(ClaimTypes.NameIdentifier, patientToAdd.Id),
             new Claim(ClaimTypes.Role, UserRoles.Patient)
         };
 
@@ -146,7 +147,7 @@ namespace BBussinesLogicLayer.Managers.Patient
         }
 
 
-        public HashSet<DoctorDataDTO> GetVisitedDoctorsInfo(string patientId)
+        public HashSet<DoctorDataDTO>? GetVisitedDoctorsInfo(string patientId)
         {
             HashSet<AppointmentDetails> DoctorsInfo = _patientRepo.GetVisitedDoctorsInfo(patientId);
 
@@ -183,6 +184,23 @@ namespace BBussinesLogicLayer.Managers.Patient
             return _patientRepo.RateDoctor(patientId, doctorId, rating);
         }
 
-       
+
+        public HashSet<PatientIllnessDTO>? GetAllAppointments(string id)
+        {
+            var appointment = _patientRepo.GetAllAppointments(id);
+            HashSet<PatientIllnessDTO>? appointmentDetailsDTOs = new HashSet<PatientIllnessDTO>();
+            if (appointment != null)
+            {
+                foreach (var item in appointment)
+                {
+                    appointmentDetailsDTOs.Add(new PatientIllnessDTO()
+                    {
+                        Specialization = item.Specialization,
+                        DiagnosedIssues = item.DiagnosedIssues,
+                    });
+                }
+            }
+            return appointmentDetailsDTOs;
+        }
     }
 }
