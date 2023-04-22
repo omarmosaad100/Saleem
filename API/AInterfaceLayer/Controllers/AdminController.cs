@@ -30,7 +30,6 @@ namespace AInterfaceLayer.Controllers
             return Ok();
         }
 
-        //get all drugs
         [HttpGet]
         [Route("GetAllDrugs")]
         public ActionResult GetAllDrugs()
@@ -43,10 +42,9 @@ namespace AInterfaceLayer.Controllers
             return Ok(drugs);
         }
 
-        //get drug by Id  
         [HttpGet]
         [Route("GetDrug")]
-        public ActionResult GetDrug(Guid Id)
+        public ActionResult GetDrugById(Guid Id)
         {
             var drug = _AdminManager.GetDrug(Id);
 
@@ -55,7 +53,7 @@ namespace AInterfaceLayer.Controllers
 
             return Ok(drug);
         }
-        //update drug
+        
         [HttpPut]
         [Route("UpdateDrug")]
         public ActionResult UpdateDrug([FromBody] NewDrugDto drug , Guid id)
@@ -67,7 +65,6 @@ namespace AInterfaceLayer.Controllers
             return Ok();
         }
 
-        //delete drug
         [HttpDelete]
         [Route("DeleteDrug")]
         public ActionResult DeleteDrug(Guid Id)
@@ -82,13 +79,12 @@ namespace AInterfaceLayer.Controllers
         #endregion
 
         #region Issue
-
         [HttpPost]
         [Route("AddIssue")]
-        public ActionResult AddIssue([FromBody] IssueDto issueDto)
+        public ActionResult AddIssue(string IssueName)
         {
 
-            var result = _AdminManager.AddIssue(issueDto);
+            var result = _AdminManager.AddIssue(IssueName);
 
             if (result == 0)
                 return BadRequest();
@@ -99,25 +95,44 @@ namespace AInterfaceLayer.Controllers
         #endregion
 
         #region Licence
-        //addnewLicence
-
         [HttpPost]
         [Route("AddLicense")]
         public ActionResult AddLicense([FromBody] LicenseDto licenseDto)
         {
             var result = _AdminManager.AddLicense(licenseDto);
 
-            if (result == null)
-                return BadRequest();
+            if (result == 0)
+                return BadRequest(new {message = "Couldn't Add this Licencse make sure the data is in the right format!"});
 
             return Ok();
 
         }
-
         #endregion
 
         #region Doctors
-        //getAllDoctors
+        [HttpGet]
+        [Route("GetAllDoctors")]
+        public ActionResult GetAllDoctors()
+        {
+            var doctors = _AdminManager.GetAllDoctors();
+
+            if (doctors == null)
+                return StatusCode(StatusCodes.Status404NotFound);
+
+            return Ok(doctors);
+        }
+
+        [HttpDelete]
+        [Route("RemoveDoctorLicense")]
+        public ActionResult RemoveDoctorLicense(string Id)
+        {
+            var result = _AdminManager.DeleteDoctor(Id);
+
+            if (result < 1)
+                return StatusCode(StatusCodes.Status400BadRequest);
+
+            return Ok(new { Message = "Doctor License Has been Removed."});
+        }
 
         #endregion
 

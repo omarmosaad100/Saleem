@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BBussinesLogicLayer.Dtos.Admin;
 using BBussinesLogicLayer.Dtos.Doctor;
+using BBussinesLogicLayer.Dtos.Patients;
 using CDataAccessLayer.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -24,6 +25,11 @@ namespace BBussinesLogicLayer.Helpers
                 .ForMember(dest => dest.ConflictedIssues, opt => opt.MapFrom(src => src.ConflictedIssues.Select(ci => ci.Name).ToHashSet()));
             
             //CreateMap<AppointmentDto, AppointmentDetails>();
+
+            // Mapping in Patient 
+            CreateMap<Patient, PatientDTO>();
+
+            CreateMap<AppointmentDetails, AppointmentDetailsDTO>();
         }
     }
 }

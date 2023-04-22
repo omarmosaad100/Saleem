@@ -1,4 +1,5 @@
 ﻿using CDataAccessLayer.Data.Models;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,11 @@ namespace CDataAccessLayer.Repos
         public Drug? GedDrug(Guid id);
 
         public int DeleteDrug(Guid id);
+
         public int UpdateDrug(Drug newDrug);
+
+        public HashSet<Data.Models.Doctor> GetAllDoctors();
+
+        public int DeleteDoctor(string id);
     }
 }

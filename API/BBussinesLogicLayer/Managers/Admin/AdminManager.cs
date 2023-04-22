@@ -25,11 +25,12 @@ namespace BBussinesLogicLayer.Managers.Admin
             _mapper = mapper;
         }
 
+        #region Drugs
         public int AddNewDrug(NewDrugDto drugDto)
         {
             Drug NewDrug = new Drug();
             NewDrug.Name = drugDto.Name;
-            NewDrug.Id = drugDto.Id;
+            NewDrug.Id = Guid.NewGuid();
             NewDrug.TakingMethod = drugDto.Method;
 
             HashSet<Issue> issues = _AdminRepo.GetIssueList();
@@ -47,33 +48,6 @@ namespace BBussinesLogicLayer.Managers.Admin
             var allDrugs = _AdminRepo.GetDrugList();
 
             return _mapper.Map<HashSet<DrugsDto>>(allDrugs);
-        }
-
-        public int AddIssue(IssueDto issueDto)
-        {
-            if (issueDto == null)
-                return 0;
-
-            Issue newIssue = new();
-
-            newIssue.Id = issueDto.Id;
-            newIssue.Name = issueDto.Name;
-
-            return _AdminRepo.AddIssue(newIssue);
-
-        }
-
-        public int AddLicense(LicenseDto licenseDto)
-        {
-            if (licenseDto == null)
-                return 0;
-
-            License newLicense = new();
-
-            newLicense.Id = licenseDto.Id;
-            newLicense.NationalId = licenseDto.NationalId;
-
-            return _AdminRepo.AddLicense(newLicense);
         }
 
         public DrugsDto? GetDrug(Guid id)
@@ -101,7 +75,7 @@ namespace BBussinesLogicLayer.Managers.Admin
             NewDrug.TreatedIssues = new Collection<Issue>();
             NewDrug.ConflictedIssues = new Collection<Issue>();
 
-            if (drug.TreatedIssuesIds!=null || drug.ConflictedIssuesIds != null)
+            if (drug.TreatedIssuesIds != null || drug.ConflictedIssuesIds != null)
             {
                 HashSet<Issue> issues = _AdminRepo.GetIssueList();
 
@@ -119,10 +93,57 @@ namespace BBussinesLogicLayer.Managers.Admin
 
             return _AdminRepo.UpdateDrug(NewDrug);
         }
+        #endregion
+
+        #region Issues
+        public int AddIssue(string issueName)
+        {
+            if (issueName == null)
+                return 0;
+
+            Issue newIssue = new();
+
+            newIssue.Id = Guid.NewGuid();
+            newIssue.Name = issueName;
+
+            return _AdminRepo.AddIssue(newIssue);
+
+        }
+        #endregion
+
+        #region Licenses
+        public int AddLicense(LicenseDto licenseDto)
+        {
+            if (licenseDto == null)
+                return 0;
+
+            License newLicense = new();
+
+            newLicense.Id = Guid.NewGuid();
+            newLicense.NationalId = licenseDto.NationalId;
+
+            return _AdminRepo.AddLicense(newLicense);
+        }
+        #endregion
+
+        #region Doctors
+        public HashSet<DoctorDto> GetAllDoctors()
+        {
+            var allDoctors = _AdminRepo.GetAllDoctors();
+
+            return _mapper.Map<HashSet<DoctorDto>>(allDoctors);
+        }
+
+        public int DeleteDoctor(string id)
+        {
+            return _AdminRepo.DeleteDoctor(id);
+        }
+        #endregion
     }
 }
 
 
+//Mapping the hard way
 //public HashSet<AllDrugDto> das()
 //{
 //    HashSet<AllDrugDto> allDrugs = new HashSet<AllDrugDto>();
@@ -135,7 +156,6 @@ namespace BBussinesLogicLayer.Managers.Admin
 //            var Name = drug.TreatedIssues.ElementAt(i).Name;
 //            DTI.Add(new DrugTreatedIssuesDto(Id, Name));
 //        }
-
 //        HashSet<DrugConflicedIssuesDto> DCI = new();
 //        for (int i = 0; i < drug.ConflictedIssues.Count; i++)
 //        {
@@ -143,8 +163,6 @@ namespace BBussinesLogicLayer.Managers.Admin
 //            var Name = drug.ConflictedIssues.ElementAt(i).Name;
 //            DCI.Add(new DrugConflicedIssuesDto(Id, Name));
 //        }
-
-
 //        allDrugs.Add(new AllDrugDto(drug.Id, drug.Name, drug.TakingMethod, DTI, DCI));
 //    }
 //    return allDrugs;

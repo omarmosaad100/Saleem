@@ -4,6 +4,7 @@ using CDataAccessLayer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CDataAccessLayer.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230418203655_nationalIdsAdded")]
+    partial class nationalIdsAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -77,9 +80,6 @@ namespace CDataAccessLayer.Migrations
                     b.Property<decimal>("Rating")
                         .HasColumnType("decimal(2,1)");
 
-                    b.Property<int>("Specialization")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("DId");
@@ -136,121 +136,121 @@ namespace CDataAccessLayer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("6538aa26-133f-42aa-b1d2-640c2ecb59c0"),
+                            Id = new Guid("b73dddfe-d248-4340-97d2-4aaabe14ed23"),
                             Name = "Ibuprofen",
                             TakingMethod = 0
                         },
                         new
                         {
-                            Id = new Guid("57d4a114-7fa2-4b32-832d-97b07c8b3355"),
+                            Id = new Guid("fb6928f6-8e06-49b3-9df8-c76739559474"),
                             Name = "Paracetamol",
                             TakingMethod = 0
                         },
                         new
                         {
-                            Id = new Guid("a6db3d1b-8863-486e-9870-f561c2ff7d81"),
+                            Id = new Guid("bf8be46d-f777-4d38-b6e4-e5fe5c38f252"),
                             Name = "Amoxicillin",
                             TakingMethod = 0
                         },
                         new
                         {
-                            Id = new Guid("0cc6cc34-5bf1-4d6b-8f4c-321cb526a5b1"),
+                            Id = new Guid("68a96702-07a6-453b-964b-9e31388ac43a"),
                             Name = "Azithromycin",
                             TakingMethod = 0
                         },
                         new
                         {
-                            Id = new Guid("af6300dc-116e-4186-8412-435023653f37"),
+                            Id = new Guid("b9d63277-f8dd-4973-8b0b-17452087e12a"),
                             Name = "Prednisone",
                             TakingMethod = 0
                         },
                         new
                         {
-                            Id = new Guid("809bf907-1fa0-42ef-8b7f-67942be59661"),
+                            Id = new Guid("3b4058f4-ba5a-4208-afe1-a937fe451d77"),
                             Name = "Ventolin",
                             TakingMethod = 2
                         },
                         new
                         {
-                            Id = new Guid("c7be1578-23c0-423f-9caa-88b9bd80f0da"),
+                            Id = new Guid("232d52b9-8eb1-4a9c-a787-0b702fdef19f"),
                             Name = "Epinephrine",
                             TakingMethod = 1
                         },
                         new
                         {
-                            Id = new Guid("80033b40-f400-4789-814b-6a3b3eb04c04"),
+                            Id = new Guid("89d2e4d7-2e89-4ccf-aa45-6c943a544cd5"),
                             Name = "Lidocaine",
                             TakingMethod = 3
                         },
                         new
                         {
-                            Id = new Guid("9e23f49f-4ce1-48ac-a9eb-d10b32b3638e"),
+                            Id = new Guid("583428b1-338b-4a4b-a909-58a9472465bf"),
                             Name = "Morphine",
                             TakingMethod = 1
                         },
                         new
                         {
-                            Id = new Guid("092613a1-bf2d-4266-8a79-597f02e61838"),
+                            Id = new Guid("e07121fe-3346-4af5-a13c-dce14e5bd14e"),
                             Name = "Ativan",
                             TakingMethod = 0
                         },
                         new
                         {
-                            Id = new Guid("5ac18c3c-6af2-4044-82c2-1d1e6c6782a7"),
+                            Id = new Guid("f3772df6-2551-4b90-96a8-c5e77d5c8e63"),
                             Name = "Prozac",
                             TakingMethod = 0
                         },
                         new
                         {
-                            Id = new Guid("a4dce63c-d092-4fd3-8e89-4628a5a199a7"),
+                            Id = new Guid("d46a6e9f-d87d-482d-860a-e19717e5653f"),
                             Name = "Zoloft",
                             TakingMethod = 0
                         },
                         new
                         {
-                            Id = new Guid("3eca55bc-0235-43af-8f2d-bcbfb3151651"),
+                            Id = new Guid("59d50b39-0ccf-4feb-932c-b40e0d4db222"),
                             Name = "Xanax",
                             TakingMethod = 0
                         },
                         new
                         {
-                            Id = new Guid("dad41470-4156-4404-bbbd-55f24d8d06c1"),
+                            Id = new Guid("8daa6c1d-44ed-4161-9f65-451e371b0f2d"),
                             Name = "Lorazepam",
                             TakingMethod = 0
                         },
                         new
                         {
-                            Id = new Guid("5dd49fca-9e47-4541-8e45-2656c897cd58"),
+                            Id = new Guid("1b1766bb-286f-465e-b555-ee723791f03c"),
                             Name = "Valium",
                             TakingMethod = 0
                         },
                         new
                         {
-                            Id = new Guid("a820f852-88a9-4117-91ef-e3f1fffda236"),
+                            Id = new Guid("559a33d9-5780-455c-be6c-0396ad3df1ca"),
                             Name = "Codeine",
                             TakingMethod = 0
                         },
                         new
                         {
-                            Id = new Guid("1f1523c9-b6ea-4af3-b406-225fc9b21988"),
+                            Id = new Guid("f494ae16-b1e7-4cd7-b1f3-b69e867403f1"),
                             Name = "Methadone",
                             TakingMethod = 0
                         },
                         new
                         {
-                            Id = new Guid("b1ce3a77-ed96-413a-a545-437e603d11e2"),
+                            Id = new Guid("7300fcf0-081f-4c74-9cee-bcf46966f70c"),
                             Name = "Oxycodone",
                             TakingMethod = 0
                         },
                         new
                         {
-                            Id = new Guid("64c117de-ec37-4ff0-9d43-7110a5889aa3"),
+                            Id = new Guid("9e72682f-1b1f-4c43-ae77-b63f6f49bb93"),
                             Name = "Hydrocodone",
                             TakingMethod = 0
                         },
                         new
                         {
-                            Id = new Guid("679997ae-ae90-453c-9f48-875da65ba363"),
+                            Id = new Guid("7e3e2107-2224-4895-923c-f2efb79d8faa"),
                             Name = "Fentanyl",
                             TakingMethod = 1
                         });
@@ -273,52 +273,52 @@ namespace CDataAccessLayer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("eb7041b3-4b05-4808-95da-1087f3344772"),
+                            Id = new Guid("637b2123-5277-4729-8c01-85784ce1fa7e"),
                             Name = "Headache"
                         },
                         new
                         {
-                            Id = new Guid("43b7832e-3597-4b20-aa37-2f082e1bc02d"),
+                            Id = new Guid("e98e87ec-51f3-4ace-9d54-4e687f042fd4"),
                             Name = "Fever"
                         },
                         new
                         {
-                            Id = new Guid("362c005b-8b88-4017-bdec-ec36d69c4a1a"),
+                            Id = new Guid("607ed07d-15a7-47a2-afd5-8af0be905f40"),
                             Name = "Cough"
                         },
                         new
                         {
-                            Id = new Guid("3b22af83-ae8e-43a7-919d-2665a87a3a30"),
+                            Id = new Guid("1d7687ef-405a-4e03-a646-28157ca668f8"),
                             Name = "Sore throat"
                         },
                         new
                         {
-                            Id = new Guid("b26da2c4-3280-44a7-a3e6-d003c56c3138"),
+                            Id = new Guid("cd8455bf-c154-41ab-a3c3-dc3a11c9183a"),
                             Name = "Back pain"
                         },
                         new
                         {
-                            Id = new Guid("ea825342-45b0-4d32-a563-b2c391879902"),
+                            Id = new Guid("2325083e-ce14-4cef-abe4-1ada8f03892a"),
                             Name = "Joint pain"
                         },
                         new
                         {
-                            Id = new Guid("fe870bf8-ef59-4b8f-8285-c48beb2c4a18"),
+                            Id = new Guid("3fab4b96-2d79-4899-9f3a-e26e6cd0875a"),
                             Name = "Allergies"
                         },
                         new
                         {
-                            Id = new Guid("7307a13e-72d4-4914-a0ac-1afd4c71b381"),
+                            Id = new Guid("028703c6-06dd-472a-8cec-a71a8ee6fbf5"),
                             Name = "High blood pressure"
                         },
                         new
                         {
-                            Id = new Guid("576a5c9e-93cb-4e9b-ac82-6ee1818716cf"),
+                            Id = new Guid("a8d40922-5a9d-4494-8e46-2a2f8a7f5da1"),
                             Name = "Depression"
                         },
                         new
                         {
-                            Id = new Guid("f158241f-2678-4000-91e2-ed76d7453db8"),
+                            Id = new Guid("1686db70-fd65-4895-ba1b-c2a285e6cf7d"),
                             Name = "Anxiety"
                         });
                 });
@@ -402,9 +402,6 @@ namespace CDataAccessLayer.Migrations
 
                     b.Property<int>("Gender")
                         .HasColumnType("int");
-
-                    b.Property<string>("ImgPath")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
