@@ -37,7 +37,6 @@ namespace CDataAccessLayer.Data.Models
         public Doctor Doctor { get; set; }
 
 
-
         [InverseProperty("Appointments")]
         public virtual ICollection<Drug> DescribedDrugs { get; set; } = new HashSet<Drug>();
 
