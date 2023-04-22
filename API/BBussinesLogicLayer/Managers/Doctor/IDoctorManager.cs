@@ -14,7 +14,7 @@ namespace BBussinesLogicLayer.Managers.Doctor
     {
         public int AddAppointment(AppointmentDto appointmentDto);
         public HashSet<DisplayedAppointmentDto> GetAppointmentsByNid(string nid);
-        public DoctorDto GetDoctorProfileById(string did);
+        public DoctorProfileDto GetDoctorProfileById(string did);
         public bool DeleteIssueByPidAndIssueName(string pid, string name);
         public DrugDto GetDrugRecommendation(string issueName, string pid);
     }

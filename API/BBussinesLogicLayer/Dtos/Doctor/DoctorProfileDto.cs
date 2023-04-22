@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace BBussinesLogicLayer.Dtos.Doctor
 {
-    public class DoctorDto
+    public class DoctorProfileDto
     {
         public string Id { get; set; }
 

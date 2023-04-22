@@ -72,11 +72,11 @@ namespace BBussinesLogicLayer.Managers.Doctor
 
         }
 
-        public DoctorDto GetDoctorProfileById(string did)
+        public DoctorProfileDto GetDoctorProfileById(string did)
         {
             var doctor = _doctorRepo.GetDoctorProfileById(did);
 
-            return _mapper.Map<DoctorDto>(doctor);
+            return _mapper.Map<DoctorProfileDto>(doctor);
         }
 
 
