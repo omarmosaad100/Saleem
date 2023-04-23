@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BBussinesLogicLayer.Dtos;
 using BBussinesLogicLayer.Dtos.Admin;
 using BBussinesLogicLayer.Dtos.Doctor;
 using BBussinesLogicLayer.Dtos.Patients;
@@ -24,10 +25,11 @@ namespace BBussinesLogicLayer.Helpers
             CreateMap<Issue, DrugConflicedIssuesDto>();
             CreateMap<Issue, DrugTreatedIssuesDto>();
             CreateMap<Doctor, DoctorDto>();
+            CreateMap<Issue, IssueDto>();
 
             CreateMap<Drug, DrugDto>()
                 .ForMember(dest => dest.ConflictedIssues, opt => opt.MapFrom(src => src.ConflictedIssues.Select(ci => ci.Name).ToHashSet()));
-            
+
             //CreateMap<AppointmentDto, AppointmentDetails>();
 
             // Mapping in Patient 

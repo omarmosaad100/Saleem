@@ -53,12 +53,12 @@ namespace AInterfaceLayer.Controllers
 
             return Ok(drug);
         }
-        
+
         [HttpPut]
         [Route("UpdateDrug/{Id}")]
-        public ActionResult UpdateDrug([FromBody] NewDrugDto drug , Guid id)
+        public ActionResult UpdateDrug([FromBody] NewDrugDto drug, Guid Id)
         {
-            var result = _AdminManager.UpdateDrug(drug , id);
+            var result = _AdminManager.UpdateDrug(drug, Id);
 
             if (result == 0)
                 return BadRequest();
@@ -92,6 +92,19 @@ namespace AInterfaceLayer.Controllers
             return Ok();
         }
 
+        [HttpGet]
+        [Route("GetAllIssues")]
+        public ActionResult GetAllIssues()
+        {
+            var issues = _AdminManager.GetAllIssues();
+
+            if (issues.Count == 0)
+                return BadRequest(new { message = "No Issues Found" });
+
+            return Ok(issues);
+        }
+
+
         #endregion
 
         #region Licence
@@ -102,7 +115,7 @@ namespace AInterfaceLayer.Controllers
             var result = _AdminManager.AddLicense(licenseDto);
 
             if (result == 0)
-                return BadRequest(new {message = "Couldn't Add this Licencse make sure the data is in the right format!"});
+                return BadRequest(new { message = "Couldn't Add this Licencse make sure the data is in the right format!" });
 
             return Ok();
 
@@ -131,7 +144,7 @@ namespace AInterfaceLayer.Controllers
             if (result < 1)
                 return StatusCode(StatusCodes.Status400BadRequest);
 
-            return Ok(new { Message = "Doctor License Has been Removed."});
+            return Ok(new { Message = "Doctor License Has been Removed." });
         }
 
         #endregion

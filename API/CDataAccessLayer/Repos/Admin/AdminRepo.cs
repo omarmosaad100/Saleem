@@ -97,6 +97,12 @@ namespace CDataAccessLayer.Repos
             }
             return 0;
         }
+
+        public HashSet<Issue> GetAllIssues()
+        {
+            return _context.Issues.ToHashSet();
+        }
+
         #endregion
 
         #region Licenses
@@ -134,7 +140,6 @@ namespace CDataAccessLayer.Repos
             _context.licenses.Remove(license!);
             return _context.SaveChanges();
         }
-
 
         #endregion
     }

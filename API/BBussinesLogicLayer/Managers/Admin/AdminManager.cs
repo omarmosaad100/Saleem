@@ -130,6 +130,13 @@ namespace BBussinesLogicLayer.Managers.Admin
 
             return _AdminRepo.AddLicense(newLicense);
         }
+
+
+        public HashSet<IssueDto> GetAllIssues()
+        {
+            var Issues = _AdminRepo.GetAllIssues();
+            return _mapper.Map<HashSet<IssueDto>>(Issues);
+        }
         #endregion
 
         #region Doctors
