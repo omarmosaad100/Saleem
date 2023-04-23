@@ -180,7 +180,7 @@ public class PatientController : ControllerBase
 
     [HttpPatch]
     [Authorize(Policy = "Patient")]
-    [Route("RateDoctor")]
+    [Route("RateDoctor/{docId}")]
     public ActionResult RateDoctor(string docId,decimal rating)
     {
         string? patientId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -210,11 +210,8 @@ public class PatientController : ControllerBase
 
         return BadRequest(new { message = "Patient doesn't have illnesses " });
     }
-
-
-
-
 }
+
 #region Old Register
 //[HttpPost]
 //[Route("Register")]
