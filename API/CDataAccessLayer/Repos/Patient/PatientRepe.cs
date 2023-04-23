@@ -40,13 +40,13 @@ namespace CDataAccessLayer.Repos.Patient
             {
                 return null;
             }
-            patient.Age =  newPatientData.Age;
+            patient.Age = newPatientData.Age;
             patient.Name = newPatientData.Name;
             patient.ImgPath = newPatientData.ImgPath;
             patient.Gender = newPatientData.Gender;
 
             _context.SaveChanges();
-                 
+
             return newPatientData;
         }
 
@@ -69,13 +69,13 @@ namespace CDataAccessLayer.Repos.Patient
         }
 
 
-       
+
         // get Doctor Details + Specialization of Doctor
         public HashSet<Data.Models.AppointmentDetails> GetVisitedDoctorsInfo(string patientId)
         {
             return _context.Set<Data.Models.AppointmentDetails>()
-                .Include(d=>d.Doctor)
-                .Where(a=>a.PId == patientId)
+                .Include(d => d.Doctor)
+                .Where(a => a.PId == patientId)
                 .ToHashSet();
         }
 
@@ -84,27 +84,38 @@ namespace CDataAccessLayer.Repos.Patient
         {
             return _context.Set<Data.Models.AppointmentDetails>()
                 .Include(d => d.Doctor)
-                .Include(d=> d.DescribedDrugs)
+                .Include(d => d.DescribedDrugs)
                 .Include(d => d.DiagnosedIssues)
                 .Where(a => a.PId == patientId && a.DId == DocID)
                 .FirstOrDefault();
         }
 
 
-        public int? RateDoctor(string patientId, string doctorId , decimal rating)
+        public int? RateDoctor(string patientId, string doctorId, decimal rating)
         {
             AppointmentDetails? appointment = _context.Set<Data.Models.AppointmentDetails>()
                                                .Where(a => a.PId == patientId && a.DId == doctorId)
                                                .FirstOrDefault();
-               if (appointment is null)
-               {
-                    return null;
-               }
+            if (appointment is null)
+            {
+                return null;
+            }
 
             appointment.Rating = rating;
 
             return _context.SaveChanges();
 
+        }
+        public HashSet<AppointmentDetails>? GetAllAppointments(string patientId)
+        {
+
+                
+
+            HashSet<AppointmentDetails>? appointmentDetails = _context.AppointmentDetails
+                .Include(p => p.DiagnosedIssues)
+                .Where(p => p.PId == patientId)
+                .ToHashSet();
+            return appointmentDetails; 
         }
 
     }

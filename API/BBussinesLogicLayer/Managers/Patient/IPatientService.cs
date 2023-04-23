@@ -1,4 +1,5 @@
 ﻿using BBussinesLogicLayer.Dtos.Patients;
+using CDataAccessLayer.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -19,11 +20,16 @@ namespace BBussinesLogicLayer.Managers.Patient
 
         public HashSet<PatientDrugsDTO>? GetPatientDrugs(string id);
 
-        public HashSet<DoctorDataDTO> GetVisitedDoctorsInfo(string patientId);
+        public HashSet<DoctorDataDTO>? GetVisitedDoctorsInfo(string patientId);
 
         public AppointmentDetailsDTO? GetAppointmentDetailsOfSpecificDoc(string patientId, string DocID);
 
         public int? RateDoctor(string patientId, string doctorId, decimal rating);
+
+        public HashSet<PatientIllnessDTO>? GetAllAppointments(string id);
+
+
+
 
     }
 }

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using BBussinesLogicLayer.Managers.Doctor;
 using BBussinesLogicLayer.Managers.Patient;
 using CDataAccessLayer.Repos.Patient;
 using Microsoft.AspNetCore.Builder;
@@ -21,10 +22,12 @@ namespace AInterfaceLayer
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddControllers();
+            builder.Services.AddControllers().AddNewtonsoftJson(o => o.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            
 
             #region Database
             builder.Services.AddDbContext<DataContext>(options =>
@@ -35,6 +38,7 @@ namespace AInterfaceLayer
 
             #region Repos
             builder.Services.AddScoped<IAdminRepo, AdminRepo>();
+            builder.Services.AddScoped<IDoctorRepo, DoctorRepo>();
             builder.Services.AddScoped<IPatientRepo, PatientRepe>();
             #endregion
 
@@ -54,6 +58,7 @@ namespace AInterfaceLayer
 
             builder.Services.AddScoped<IAdminManager, AdminManager>();
             builder.Services.AddScoped<IPatientService, PatientService>();
+            builder.Services.AddScoped<IDoctorManager, DoctorManager>();
 
             #endregion
 
@@ -101,6 +106,7 @@ namespace AInterfaceLayer
                     policy.RequireClaim(ClaimTypes.Role, "Doctor"));
             });
 
+            
             #endregion
 
             #region CORS
