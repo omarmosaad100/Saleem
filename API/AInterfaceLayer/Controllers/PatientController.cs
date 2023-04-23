@@ -162,7 +162,7 @@ public class PatientController : ControllerBase
 
     [HttpGet]
     [Authorize(Policy = "Patient")]
-    [Route("GetAppointmentDetails")]
+    [Route("GetAppointmentDetails/{docId}")]
 
     public ActionResult<AppointmentDetailsDTO> GetAppointmentDetailsOfSpecificDoc(string docId)
     {
@@ -178,11 +178,10 @@ public class PatientController : ControllerBase
     }
 
 
-    [HttpPost]
+    [HttpPatch]
     [Authorize(Policy = "Patient")]
     [Route("RateDoctor")]
-
-    public ActionResult RateDoctor(string docId, decimal rating)
+    public ActionResult RateDoctor(string docId,decimal rating)
     {
         string? patientId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (patientId == null)
