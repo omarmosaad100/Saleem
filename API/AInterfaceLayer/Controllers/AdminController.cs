@@ -81,7 +81,7 @@ namespace AInterfaceLayer.Controllers
         #region Issue
         [HttpPost]
         [Route("AddIssue")]
-        public ActionResult AddIssue(string IssueName)
+        public ActionResult AddIssue(IssueDto IssueName)
         {
 
             var result = _AdminManager.AddIssue(IssueName);

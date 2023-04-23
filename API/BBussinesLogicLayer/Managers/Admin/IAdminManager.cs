@@ -15,7 +15,7 @@ namespace BBussinesLogicLayer.Managers.Admin
 
         public HashSet<DrugsDto> GetDrugList();
 
-        public int AddIssue(string issueName);
+        public int AddIssue(IssueDto issueName);
 
         public int AddLicense(LicenseDto licenseDto);
 

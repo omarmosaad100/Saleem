@@ -102,7 +102,7 @@ namespace BBussinesLogicLayer.Managers.Admin
         #endregion
 
         #region Issues
-        public int AddIssue(string issueName)
+        public int AddIssue(IssueDto issueName)
         {
             if (issueName == null)
                 return 0;
@@ -110,7 +110,7 @@ namespace BBussinesLogicLayer.Managers.Admin
             Issue newIssue = new();
 
             newIssue.Id = Guid.NewGuid();
-            newIssue.Name = issueName;
+            newIssue.Name = issueName.Name;
 
             return _AdminRepo.AddIssue(newIssue);
 
