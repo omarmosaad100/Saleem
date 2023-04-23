@@ -35,10 +35,16 @@ namespace BBussinesLogicLayer.Managers.Admin
 
             HashSet<Issue> issues = _AdminRepo.GetIssueList();
 
-            var TreatedIssues = issues.Where(i => drugDto.TreatedIssuesIds.Contains(i.Id)).ToList();
-            var ConflictedIssues = issues.Where(i => drugDto.ConflictedIssuesIds.Contains(i.Id)).ToList();
-            NewDrug.TreatedIssues = TreatedIssues;
-            NewDrug.ConflictedIssues = ConflictedIssues;
+            if (drugDto.TreatedIssuesIds?.Length > 0)
+            {
+                var TreatedIssues = issues.Where(i => drugDto.TreatedIssuesIds.Contains(i.Id)).ToList();
+                NewDrug.TreatedIssues = TreatedIssues;
+            }
+            if (drugDto.ConflictedIssuesIds?.Length > 0)
+            {
+                var ConflictedIssues = issues.Where(i => drugDto.ConflictedIssuesIds.Contains(i.Id)).ToList();
+                NewDrug.ConflictedIssues = ConflictedIssues;
+            }
 
             return _AdminRepo.AddDrug(NewDrug);
         }

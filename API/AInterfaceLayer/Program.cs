@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using BBussinesLogicLayer.Managers.Patient;
 using CDataAccessLayer.Repos.Patient;
+using Microsoft.AspNetCore.Builder;
 
 namespace AInterfaceLayer
 {
@@ -126,7 +127,15 @@ namespace AInterfaceLayer
             app.UseAuthorization();
 
             #region CORS 
-            app.UseCors(policyBuilder => policyBuilder.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200"));
+            //app.UseCors(policyBuilder => 
+            //policyBuilder.AllowAnyHeader()
+            //.AllowAnyMethod()
+            //.WithOrigins("http://localhost:4200"));
+
+            app.UseCors(policyBuilder => policyBuilder
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod());
             #endregion
 
             app.MapControllers();
