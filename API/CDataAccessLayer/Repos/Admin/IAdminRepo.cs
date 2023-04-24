@@ -29,5 +29,7 @@ namespace CDataAccessLayer.Repos
         public HashSet<Data.Models.Doctor> GetAllDoctors();
 
         public int DeleteDoctor(string id);
+        public HashSet<Issue> GetAllIssues();
+
     }
 }

@@ -27,5 +27,6 @@ namespace BBussinesLogicLayer.Managers.Admin
 
         public HashSet<DoctorDto> GetAllDoctors();
         public int DeleteDoctor(string id);
+        public HashSet<IssueDto> GetAllIssues();
     }
 }
