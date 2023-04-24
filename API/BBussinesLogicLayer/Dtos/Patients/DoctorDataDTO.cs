@@ -14,6 +14,7 @@ namespace BBussinesLogicLayer.Dtos.Patients
         public Specialization Specialization { get; set; }
 
         public Gender Gender { get; set; }
+        public DateTime AppointmentDate { get; set; }
 
     }
 }
