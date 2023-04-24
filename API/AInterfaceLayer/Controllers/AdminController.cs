@@ -1,4 +1,5 @@
 ﻿using BBussinesLogicLayer.Dtos;
+using BBussinesLogicLayer.Dtos.Admin;
 using BBussinesLogicLayer.Managers.Admin;
 using CDataAccessLayer.Data.Models;
 using Microsoft.AspNetCore.Http;
@@ -149,5 +150,21 @@ namespace AInterfaceLayer.Controllers
 
         #endregion
 
+        #region Authentication
+
+        [HttpPost]
+        [Route("Login")]
+        public async Task<ActionResult> Login(AdminLoginDto loginDto)
+        {
+            var result = await _AdminManager.Login(loginDto);
+
+            if(result == string.Empty)
+            {
+                return NotFound("Wrong username or password");
+            }
+
+            return Ok(result);  //return token string
+        }
+        #endregion
     }
 }
