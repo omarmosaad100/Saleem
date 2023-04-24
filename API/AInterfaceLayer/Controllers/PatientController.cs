@@ -82,18 +82,26 @@ namespace AInterfaceLayer.Controllers
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenString = tokenHandler.WriteToken(token);
 
-            return new TokenDto(tokenString, expiry);
-        }
+            var roleClaim = token.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
+            var role = roleClaim?.Value;
 
+            return new TokenDto(tokenString  , expiry , role);
+        }
 
         [HttpGet]
         [Authorize(Policy = "Patient")]
         [Route("GetPatientDetails")]
 
-        public ActionResult<PatientDTO> GetPatientData(string id)
+        public ActionResult<PatientDTO> GetPatientData()
         {
-           PatientDTO? patientDTO = _patientService.GetPatientDetails(id);
-            if(patientDTO is null)
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if(userId== null) 
+            {
+                return NotFound();
+            }
+
+            PatientDTO? patientDTO = _patientService.GetPatientDetails(userId);
+            if (patientDTO is null)
             {
                 return Unauthorized(new { message = "Patient Not Found" });
             }
@@ -115,7 +123,6 @@ namespace AInterfaceLayer.Controllers
             }
             return editProfileDto;
         }
-
 
 
         [HttpGet]

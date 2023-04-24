@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using BBussinesLogicLayer.Managers.Patient;
 using CDataAccessLayer.Repos.Patient;
+using BBussinesLogicLayer.Managers.Home;
+using CDataAccessLayer.Repos.Home;
 
 namespace AInterfaceLayer
 {
@@ -35,6 +37,8 @@ namespace AInterfaceLayer
             #region Repos
             builder.Services.AddScoped<IAdminRepo, AdminRepo>();
             builder.Services.AddScoped<IPatientRepo, PatientRepe>();
+            builder.Services.AddScoped<IHomeRepo, HomeRepo>();
+
             #endregion
 
             #region Identity Managers
@@ -53,6 +57,8 @@ namespace AInterfaceLayer
 
             builder.Services.AddScoped<IAdminManager, AdminManager>();
             builder.Services.AddScoped<IPatientService, PatientService>();
+            builder.Services.AddScoped<IHomeManager, HomeManager>();
+
 
             #endregion
 
