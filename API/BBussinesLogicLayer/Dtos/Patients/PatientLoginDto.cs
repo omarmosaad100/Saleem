@@ -12,6 +12,6 @@ namespace BBussinesLogicLayer.Dtos.Patients
         public string Password { get; set; }
     }
 
-    public record TokenDto(string Token, DateTime Expiry);
+    public record TokenDto(string Token, DateTime Expiry , string? Role);
 
 }

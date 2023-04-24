@@ -82,8 +82,11 @@ public class PatientController : ControllerBase
         var tokenHandler = new JwtSecurityTokenHandler();
         var tokenString = tokenHandler.WriteToken(token);
 
-        return new TokenDto(tokenString, expiry);
-    }
+            var roleClaim = token.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
+            var role = roleClaim?.Value;
+
+            return new TokenDto(tokenString  , expiry , role);
+        }
 
 
     [HttpGet]

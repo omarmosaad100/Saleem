@@ -11,7 +11,8 @@ using Microsoft.IdentityModel.Tokens;
 using BBussinesLogicLayer.Managers.Doctor;
 using BBussinesLogicLayer.Managers.Patient;
 using CDataAccessLayer.Repos.Patient;
-using Microsoft.AspNetCore.Builder;
+using BBussinesLogicLayer.Managers.Home;
+using CDataAccessLayer.Repos.Home;
 
 namespace AInterfaceLayer
 {
@@ -40,6 +41,8 @@ namespace AInterfaceLayer
             builder.Services.AddScoped<IAdminRepo, AdminRepo>();
             builder.Services.AddScoped<IDoctorRepo, DoctorRepo>();
             builder.Services.AddScoped<IPatientRepo, PatientRepe>();
+            builder.Services.AddScoped<IHomeRepo, HomeRepo>();
+
             #endregion
 
             #region Identity Managers
@@ -59,6 +62,8 @@ namespace AInterfaceLayer
             builder.Services.AddScoped<IAdminManager, AdminManager>();
             builder.Services.AddScoped<IPatientService, PatientService>();
             builder.Services.AddScoped<IDoctorManager, DoctorManager>();
+            builder.Services.AddScoped<IHomeManager, HomeManager>();
+
 
             #endregion
 
