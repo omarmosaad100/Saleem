@@ -11,4 +11,6 @@ namespace BBussinesLogicLayer.Dtos.Admin
         public string username { get; set; }
         public string password { get; set; }
     }
+
+    public record AdminTokenDto(string Token, DateTime Expiry, string? Role);
 }

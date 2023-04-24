@@ -3,6 +3,7 @@ using BBussinesLogicLayer.Dtos.Admin;
 using BBussinesLogicLayer.Managers.Admin;
 using CDataAccessLayer.Data.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.Elfie.Diagnostics;
 
@@ -151,14 +152,22 @@ namespace AInterfaceLayer.Controllers
         #endregion
 
         #region Authentication
-
+        [HttpPost]
+        [Route("Register")]
+        public async Task<ActionResult> Register(AdminLoginDto loginDto)
+        {
+            IdentityResult result = await _AdminManager.Register(loginDto);
+            if (!result.Succeeded)
+                return BadRequest(result.Errors);
+            return NoContent();
+        }
         [HttpPost]
         [Route("Login")]
-        public async Task<ActionResult> Login(AdminLoginDto loginDto)
+        public async Task<ActionResult<AdminTokenDto>> Login(AdminLoginDto loginDto)
         {
             var result = await _AdminManager.Login(loginDto);
 
-            if(result == string.Empty)
+            if(result == null)
             {
                 return NotFound("Wrong username or password");
             }
