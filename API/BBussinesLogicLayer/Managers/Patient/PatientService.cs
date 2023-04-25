@@ -158,7 +158,7 @@ namespace BBussinesLogicLayer.Managers.Patient
                 DoctorsInfoDto.Add(
                     new DoctorDataDTO
                     {
-                        Id = appointment.DId,
+                        Id = appointment.Id.ToString(),
                         Name = appointment.Doctor.Name,
                         Gender = appointment.Doctor.Gender,
                         Specialization = appointment.Doctor.Specialization,
