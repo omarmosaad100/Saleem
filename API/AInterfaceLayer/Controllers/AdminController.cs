@@ -1,7 +1,9 @@
 ﻿using BBussinesLogicLayer.Dtos;
+using BBussinesLogicLayer.Dtos.Admin;
 using BBussinesLogicLayer.Managers.Admin;
 using CDataAccessLayer.Data.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.Elfie.Diagnostics;
 
@@ -43,7 +45,7 @@ namespace AInterfaceLayer.Controllers
         }
 
         [HttpGet]
-        [Route("GetDrug")]
+        [Route("GetDrug/{Id}")]
         public ActionResult GetDrugById(Guid Id)
         {
             var drug = _AdminManager.GetDrug(Id);
@@ -53,12 +55,12 @@ namespace AInterfaceLayer.Controllers
 
             return Ok(drug);
         }
-        
+
         [HttpPut]
-        [Route("UpdateDrug")]
-        public ActionResult UpdateDrug([FromBody] NewDrugDto drug , Guid id)
+        [Route("UpdateDrug/{Id}")]
+        public ActionResult UpdateDrug([FromBody] NewDrugDto drug, Guid Id)
         {
-            var result = _AdminManager.UpdateDrug(drug , id);
+            var result = _AdminManager.UpdateDrug(drug, Id);
 
             if (result == 0)
                 return BadRequest();
@@ -66,7 +68,7 @@ namespace AInterfaceLayer.Controllers
         }
 
         [HttpDelete]
-        [Route("DeleteDrug")]
+        [Route("DeleteDrug/{Id}")]
         public ActionResult DeleteDrug(Guid Id)
         {
             var result = _AdminManager.DeleteDrug(Id);
@@ -81,7 +83,7 @@ namespace AInterfaceLayer.Controllers
         #region Issue
         [HttpPost]
         [Route("AddIssue")]
-        public ActionResult AddIssue(string IssueName)
+        public ActionResult AddIssue(IssueDto IssueName)
         {
 
             var result = _AdminManager.AddIssue(IssueName);
@@ -91,6 +93,19 @@ namespace AInterfaceLayer.Controllers
 
             return Ok();
         }
+
+        [HttpGet]
+        [Route("GetAllIssues")]
+        public ActionResult GetAllIssues()
+        {
+            var issues = _AdminManager.GetAllIssues();
+
+            if (issues.Count == 0)
+                return BadRequest(new { message = "No Issues Found" });
+
+            return Ok(issues);
+        }
+
 
         #endregion
 
@@ -102,7 +117,7 @@ namespace AInterfaceLayer.Controllers
             var result = _AdminManager.AddLicense(licenseDto);
 
             if (result == 0)
-                return BadRequest(new {message = "Couldn't Add this Licencse make sure the data is in the right format!"});
+                return BadRequest(new { message = "Couldn't Add this Licencse make sure the data is in the right format!" });
 
             return Ok();
 
@@ -131,10 +146,34 @@ namespace AInterfaceLayer.Controllers
             if (result < 1)
                 return StatusCode(StatusCodes.Status400BadRequest);
 
-            return Ok(new { Message = "Doctor License Has been Removed."});
+            return Ok(new { Message = "Doctor License Has been Removed." });
         }
 
         #endregion
 
+        #region Authentication
+        [HttpPost]
+        [Route("Register")]
+        public async Task<ActionResult> Register(AdminLoginDto loginDto)
+        {
+            IdentityResult result = await _AdminManager.Register(loginDto);
+            if (!result.Succeeded)
+                return BadRequest(result.Errors);
+            return NoContent();
+        }
+        [HttpPost]
+        [Route("Login")]
+        public async Task<ActionResult<AdminTokenDto>> Login(AdminLoginDto loginDto)
+        {
+            var result = await _AdminManager.Login(loginDto);
+
+            if(result == null)
+            {
+                return NotFound("Wrong username or password");
+            }
+
+            return Ok(result);  //return token string
+        }
+        #endregion
     }
 }

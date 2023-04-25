@@ -22,4 +22,5 @@ namespace BBussinesLogicLayer.Dtos.Admin
 
         public Guid LicenseId { get; set; } = Guid.Empty;
     }
+
 }

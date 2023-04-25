@@ -30,6 +30,9 @@ namespace CDataAccessLayer.Repos.Patient
 
 
         public int? RateDoctor(string patientId , string doctorId , decimal rating);
+
+        public HashSet<AppointmentDetails>? GetAllAppointments(string patientId);
+
     
     }
 }

@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using BBussinesLogicLayer.Dtos;
 using BBussinesLogicLayer.Dtos.Admin;
 using BBussinesLogicLayer.Dtos.Doctor;
 using BBussinesLogicLayer.Dtos.Patients;
+using CDataAccessLayer.Data.Enums;
 using CDataAccessLayer.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -16,16 +18,20 @@ namespace BBussinesLogicLayer.Helpers
     {
         public AuotMapperProfile()
         {
-            CreateMap<Drug, DrugsDto>();
+            CreateMap<Drug, DrugsDto>()
+                .ForMember(dest => dest.Method, opt =>
+                opt.MapFrom(src => src.TakingMethod));
+
             CreateMap<Issue, DrugConflicedIssuesDto>();
             CreateMap<Issue, DrugTreatedIssuesDto>();
             CreateMap<Doctor, DoctorDto>();
             CreateMap<Doctor, DoctorProfileDto>();
             CreateMap<Issue, DisplayedIssueDto>();
+            CreateMap<Issue, IssueDto>();
 
             CreateMap<Drug, DrugDto>()
                 .ForMember(dest => dest.ConflictedIssues, opt => opt.MapFrom(src => src.ConflictedIssues.Select(ci => ci.Name).ToHashSet()));
-            
+
             //CreateMap<AppointmentDto, AppointmentDetails>();
 
             // Mapping in Patient 

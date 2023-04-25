@@ -26,6 +26,7 @@ namespace CDataAccessLayer.Data.Enums
         Oncologist,
         [Description("Ophthalmologist")]
         Ophthalmologist,
+        
         [Description("Orthopedist")]
         Orthopedist,
         [Description("Otolaryngologist")]
