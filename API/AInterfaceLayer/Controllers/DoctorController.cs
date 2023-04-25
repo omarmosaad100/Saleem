@@ -60,7 +60,7 @@ namespace AInterfaceLayer.Controllers
             var result = _doctorManager.DeleteIssueByPidAndIssueName(pid, name);
 
             if (result == false)
-                return BadRequest();
+                return BadRequest("result is false");
             return Ok(result);
         }
 
@@ -77,6 +77,42 @@ namespace AInterfaceLayer.Controllers
             return BadRequest();
         }
 
+
+        [HttpGet]
+        [Route("GetAllIssues")]
+        public ActionResult GetAllIssues()
+        {
+            var result = _doctorManager.GetAllIssues();
+
+            if (result != null)
+                return Ok(result);
+
+            return BadRequest();
+        }
+
+        [HttpGet]
+        [Route("GetIssuesByPid")]
+        public ActionResult GetIssuesByPid(string pid)
+        {
+            var result = _doctorManager.GetIssuesByPid(pid);
+
+            if (result != null)
+                return Ok(result);
+
+            return BadRequest();
+        }
+
+        [HttpGet]
+        [Route("GetPidByNid")]
+        public ActionResult GetPidByNid(string nid)
+        {
+            var result = _doctorManager.GetPidByNid(nid);
+
+            if (result != null)
+                return Ok(result);
+
+            return BadRequest();
+        }
 
     }
 }

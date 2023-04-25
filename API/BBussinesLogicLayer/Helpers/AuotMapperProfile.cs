@@ -20,6 +20,8 @@ namespace BBussinesLogicLayer.Helpers
             CreateMap<Issue, DrugConflicedIssuesDto>();
             CreateMap<Issue, DrugTreatedIssuesDto>();
             CreateMap<Doctor, DoctorDto>();
+            CreateMap<Doctor, DoctorProfileDto>();
+            CreateMap<Issue, DisplayedIssueDto>();
 
             CreateMap<Drug, DrugDto>()
                 .ForMember(dest => dest.ConflictedIssues, opt => opt.MapFrom(src => src.ConflictedIssues.Select(ci => ci.Name).ToHashSet()));

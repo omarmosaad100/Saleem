@@ -17,5 +17,8 @@ namespace BBussinesLogicLayer.Managers.Doctor
         public DoctorProfileDto GetDoctorProfileById(string did);
         public bool DeleteIssueByPidAndIssueName(string pid, string name);
         public DrugDto GetDrugRecommendation(string issueName, string pid);
+        public HashSet<DisplayedIssueDto> GetAllIssues();
+        public string GetPidByNid(string nid);
+        public HashSet<DisplayedIssueDto> GetIssuesByPid(string pid);
     }
 }
