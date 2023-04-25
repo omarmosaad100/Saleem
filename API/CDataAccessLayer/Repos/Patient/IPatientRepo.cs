@@ -26,12 +26,12 @@ namespace CDataAccessLayer.Repos.Patient
         public HashSet<Data.Models.AppointmentDetails> GetVisitedDoctorsInfo(string patientId);
 
         // get Appointment Details
-        public Data.Models.AppointmentDetails? GetAppointmentDetailsOfSpecificDoc(string patientId, string doctorId);
+        public Data.Models.AppointmentDetails? GetAppointmentDetailsOfSpecificDoc(string AppointmentID, string atientId);
 
 
         public int? RateDoctor(string patientId , string doctorId , decimal rating);
 
-        public HashSet<AppointmentDetails>? GetAllAppointments(string patientId);
+        public HashSet<AppointmentDetails>? GetAllIllnesses(string patientId);
 
     
     }
