@@ -102,6 +102,7 @@ namespace BBussinesLogicLayer.Managers.Patient
             {
                 return null;
             }
+            
             return _mapper.Map<PatientDTO>(patientData);
 
         }
