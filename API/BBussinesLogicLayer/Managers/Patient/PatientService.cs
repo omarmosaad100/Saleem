@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
+using Azure.Core;
 using BBussinesLogicLayer.Dtos.Admin;
 using BBussinesLogicLayer.Dtos.Patients;
 using BBussinesLogicLayer.Managers.Patient;
 using CDataAccessLayer.Data.Models;
 using CDataAccessLayer.Repos.Patient;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -102,7 +104,6 @@ namespace BBussinesLogicLayer.Managers.Patient
             {
                 return null;
             }
-            
             return _mapper.Map<PatientDTO>(patientData);
 
         }
@@ -113,8 +114,11 @@ namespace BBussinesLogicLayer.Managers.Patient
             {
                 Name = newPatientDataDTO.Name,
                 Age = newPatientDataDTO.Age,
-                Gender = newPatientDataDTO.Gender
+                Gender = newPatientDataDTO.Gender,
+                ImgPath = newPatientDataDTO.ImgPath,
+
             };
+            
             CDataAccessLayer.Data.Models.Patient? patientData = _patientRepo.EditProrfile(Id , newPatientData);
             if (patientData is null)
             {
@@ -147,7 +151,31 @@ namespace BBussinesLogicLayer.Managers.Patient
 
         }
 
+        public async Task<int?> ChangePassword(string patientId, ChangePasswordDto request)
+        {
 
+            var user = await _userManager.FindByIdAsync(patientId);
+
+            // Verify user credentials and update password using Identity
+            var result = await _userManager.ChangePasswordAsync(
+                await _userManager.FindByIdAsync(patientId),
+                request.oldPassword,
+                request.newPassword);
+
+            // Return response to client
+            if (result.Succeeded)
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+
+
+        }
+    
+        
         public HashSet<DoctorDataDTO>? GetVisitedDoctorsInfo(string patientId)
         {
             HashSet<AppointmentDetails> DoctorsInfo = _patientRepo.GetVisitedDoctorsInfo(patientId);
