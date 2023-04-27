@@ -18,6 +18,8 @@ namespace BBussinesLogicLayer.Managers.Patient
 
         public PatientDTO? EditProrfile(string Id, EditProfileDTO newPatientData);
 
+        public Task<int?> ChangePassword(string patientId, ChangePasswordDto request);
+
         public HashSet<PatientDrugsDTO>? GetPatientDrugs(string id);
 
         public HashSet<DoctorDataDTO>? GetVisitedDoctorsInfo(string patientId);

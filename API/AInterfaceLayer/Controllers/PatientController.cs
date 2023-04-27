@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using NuGet.Protocol.Plugins;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -82,11 +83,12 @@ public class PatientController : ControllerBase
         var tokenHandler = new JwtSecurityTokenHandler();
         var tokenString = tokenHandler.WriteToken(token);
 
-            var roleClaim = token.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
-            var role = roleClaim?.Value;
+        var roleClaim = token.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
+        var role = roleClaim?.Value;
+        var username = user.UserName;
 
-            return new TokenDto(tokenString  , expiry , role);
-        }
+        return new TokenDto(tokenString, expiry, role , username);
+    }
 
 
     [HttpGet]
@@ -98,9 +100,17 @@ public class PatientController : ControllerBase
         if (patientId == null)
             return Unauthorized(new { message = "Please login" });
 
+        var user = _userManager.GetUserAsync(HttpContext.User).Result;
         PatientDTO? patientDTO = _patientService.GetPatientDetails(patientId);
-        if (patientDTO != null)
+
+        if (patientDTO != null && user != null)
+        {
+            patientDTO.Email = user.Email;
+            patientDTO.PhoneNumber = user.PhoneNumber;
+
             return patientDTO;
+        }
+
 
         return Unauthorized(new { message = "Patient Not Found" });
     }
@@ -110,20 +120,59 @@ public class PatientController : ControllerBase
     [HttpPut]
     [Authorize(Policy = "Patient")]
     [Route("EditPatienProfile")]
-    public ActionResult<PatientDTO> EditPatienProfile(EditProfileDTO editProfileDTO)
+    public async Task<ActionResult> EditPatienProfile(EditProfileDTO editProfileDTO)
     {
         string? patientId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+
         if (patientId == null)
             return Unauthorized(new { message = "Please login" });
 
+        var user = await _userManager.FindByIdAsync(patientId);
+
+        if (user == null)
+        {
+            return NotFound();
+        }
+        //user.UserName = editProfileDTO.Name;
+        user.Email = editProfileDTO.Email;
+        user.PhoneNumber = editProfileDTO.PhoneNumber;
+
+        var result = await _userManager.UpdateAsync(user);
+
+
         PatientDTO? editProfileDto = _patientService.EditProrfile(patientId, editProfileDTO);
-        if (editProfileDto != null)
-            return editProfileDto;
+        if (editProfileDto != null && result.Succeeded)
+            return Ok(new { message = "Patient Edited Successfully" });
 
         return Unauthorized(new { message = "Patient Not Found" });
     }
 
 
+    [HttpPost]
+    [Route("changePassword")]
+    [Authorize(Policy = "Patient")]
+
+    public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto request)
+    {
+        string? patientId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+
+        if (patientId == null)
+            return Unauthorized(new { message = "Please login" });
+
+        // Return response to client
+        int? result = await _patientService.ChangePassword(patientId, request); 
+
+        if (result==1)
+        {
+            return Ok();
+        }
+        else
+        {
+            return BadRequest("Can't Change Password");
+        }
+    }
 
     [HttpGet]
     [Authorize(Policy = "Patient")]
