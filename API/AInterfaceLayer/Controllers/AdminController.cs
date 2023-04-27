@@ -2,6 +2,7 @@
 using BBussinesLogicLayer.Dtos.Admin;
 using BBussinesLogicLayer.Managers.Admin;
 using CDataAccessLayer.Data.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -23,6 +24,7 @@ namespace AInterfaceLayer.Controllers
         #region Drug
         [HttpPost]
         [Route("AddDrug")]
+        [Authorize(Roles = UserRoles.Admin)]
         public ActionResult AddNewDrug([FromBody] NewDrugDto drug)
         {
             var result = _AdminManager.AddNewDrug(drug);
@@ -34,6 +36,7 @@ namespace AInterfaceLayer.Controllers
 
         [HttpGet]
         [Route("GetAllDrugs")]
+        [Authorize(Roles = UserRoles.Admin)]
         public ActionResult GetAllDrugs()
         {
             var drugs = _AdminManager.GetDrugList();
@@ -46,6 +49,7 @@ namespace AInterfaceLayer.Controllers
 
         [HttpGet]
         [Route("GetDrug/{Id}")]
+        [Authorize(Roles = UserRoles.Admin)]
         public ActionResult GetDrugById(Guid Id)
         {
             var drug = _AdminManager.GetDrug(Id);
@@ -58,6 +62,7 @@ namespace AInterfaceLayer.Controllers
 
         [HttpPut]
         [Route("UpdateDrug/{Id}")]
+        [Authorize(Roles = UserRoles.Admin)]
         public ActionResult UpdateDrug([FromBody] NewDrugDto drug, Guid Id)
         {
             var result = _AdminManager.UpdateDrug(drug, Id);
@@ -69,6 +74,7 @@ namespace AInterfaceLayer.Controllers
 
         [HttpDelete]
         [Route("DeleteDrug/{Id}")]
+        [Authorize(Roles = UserRoles.Admin)]
         public ActionResult DeleteDrug(Guid Id)
         {
             var result = _AdminManager.DeleteDrug(Id);
@@ -83,6 +89,7 @@ namespace AInterfaceLayer.Controllers
         #region Issue
         [HttpPost]
         [Route("AddIssue")]
+        [Authorize(Roles = UserRoles.Admin)]
         public ActionResult AddIssue(IssueDto IssueName)
         {
 
@@ -96,6 +103,7 @@ namespace AInterfaceLayer.Controllers
 
         [HttpGet]
         [Route("GetAllIssues")]
+        [Authorize(Roles = UserRoles.Admin)]
         public ActionResult GetAllIssues()
         {
             var issues = _AdminManager.GetAllIssues();
@@ -112,6 +120,7 @@ namespace AInterfaceLayer.Controllers
         #region Licence
         [HttpPost]
         [Route("AddLicense")]
+        [Authorize(Roles = UserRoles.Admin)]
         public ActionResult AddLicense([FromBody] LicenseDto licenseDto)
         {
             var result = _AdminManager.AddLicense(licenseDto);
@@ -127,6 +136,7 @@ namespace AInterfaceLayer.Controllers
         #region Doctors
         [HttpGet]
         [Route("GetAllDoctors")]
+        [Authorize(Roles = UserRoles.Admin)]
         public ActionResult GetAllDoctors()
         {
             var doctors = _AdminManager.GetAllDoctors();
@@ -139,6 +149,7 @@ namespace AInterfaceLayer.Controllers
 
         [HttpDelete]
         [Route("RemoveDoctorLicense")]
+        [Authorize(Roles = UserRoles.Admin)]
         public ActionResult RemoveDoctorLicense(string Id)
         {
             var result = _AdminManager.DeleteDoctor(Id);
@@ -172,7 +183,7 @@ namespace AInterfaceLayer.Controllers
                 return NotFound("Wrong username or password");
             }
 
-            return Ok(result);  //return token string
+            return result;  //return token string
         }
         #endregion
     }
