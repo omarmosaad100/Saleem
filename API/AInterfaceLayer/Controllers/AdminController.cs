@@ -1,7 +1,9 @@
 ﻿using BBussinesLogicLayer.Dtos;
+using BBussinesLogicLayer.Dtos.Admin;
 using BBussinesLogicLayer.Managers.Admin;
 using CDataAccessLayer.Data.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.Elfie.Diagnostics;
 
@@ -81,7 +83,7 @@ namespace AInterfaceLayer.Controllers
         #region Issue
         [HttpPost]
         [Route("AddIssue")]
-        public ActionResult AddIssue(string IssueName)
+        public ActionResult AddIssue(IssueDto IssueName)
         {
 
             var result = _AdminManager.AddIssue(IssueName);
@@ -149,5 +151,29 @@ namespace AInterfaceLayer.Controllers
 
         #endregion
 
+        #region Authentication
+        [HttpPost]
+        [Route("Register")]
+        public async Task<ActionResult> Register(AdminLoginDto loginDto)
+        {
+            IdentityResult result = await _AdminManager.Register(loginDto);
+            if (!result.Succeeded)
+                return BadRequest(result.Errors);
+            return NoContent();
+        }
+        [HttpPost]
+        [Route("Login")]
+        public async Task<ActionResult<AdminTokenDto>> Login(AdminLoginDto loginDto)
+        {
+            var result = await _AdminManager.Login(loginDto);
+
+            if(result == null)
+            {
+                return NotFound("Wrong username or password");
+            }
+
+            return Ok(result);  //return token string
+        }
+        #endregion
     }
 }

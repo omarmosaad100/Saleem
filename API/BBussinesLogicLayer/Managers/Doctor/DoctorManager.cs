@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -58,7 +59,7 @@ namespace BBussinesLogicLayer.Managers.Doctor
                 {
                     Date = app.Date,
                     Comment = app.Comment,
-                    DId = app.DId,
+                    DoctorName = _context.Doctors.FirstOrDefault(d => d.Id == app.DId).Name,
                     DescribedDrugs = app.DescribedDrugs.Select(drug => _context.Drugs.FirstOrDefault(d => d.Id == drug.Id).Name).ToHashSet(),
                     DiagnosedIssues = app.DiagnosedIssues.Select(issue => _context.Issues.FirstOrDefault(i => i.Id == issue.Id).Name).ToHashSet(),
                     Specialization = app.Specialization,
@@ -90,8 +91,43 @@ namespace BBussinesLogicLayer.Managers.Doctor
             var drug = _doctorRepo.GetDrugRecommendation(issueName, pid);
 
             return _mapper.Map<DrugDto>(drug);
+        }
 
-            
+        public HashSet<DisplayedIssueDto> GetAllIssues()
+        {
+            var issues = _doctorRepo.GetAllIssues();
+
+            var displayedIssues = new HashSet<DisplayedIssueDto>();
+
+
+            foreach (var issue in issues)
+            {
+                var newDisplayedIssue = _mapper.Map<DisplayedIssueDto>(issue);
+                displayedIssues.Add(newDisplayedIssue);
+            }
+
+            return displayedIssues;
+        }
+
+        public string GetPidByNid(string nid)
+        {
+            return _doctorRepo.GetPidByNid(nid);
+        }
+
+        public HashSet<DisplayedIssueDto> GetIssuesByPid(string pid)
+        {
+
+            var issues = _doctorRepo.GetIssuesByPid(pid);
+
+            var displayedIssues = new HashSet<DisplayedIssueDto>();
+
+            foreach (var issue in issues)
+            {
+                var newDisplayedIssue = _mapper.Map<DisplayedIssueDto>(issue);
+                displayedIssues.Add(newDisplayedIssue);
+            }
+
+            return displayedIssues;
         }
     }
 }

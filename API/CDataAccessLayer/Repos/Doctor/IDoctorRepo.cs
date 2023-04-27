@@ -22,5 +22,11 @@ namespace CDataAccessLayer.Repos
         public bool DeleteIssueByPidAndIssueName(string pid, string name);
 
         public Drug GetDrugRecommendation(string issueName, string pid);
+
+        public HashSet<Issue> GetAllIssues();
+
+        public string GetPidByNid(string nid);
+
+        public HashSet<Issue> GetIssuesByPid(string pid);
     }
 }

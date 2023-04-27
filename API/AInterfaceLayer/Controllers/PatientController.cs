@@ -214,15 +214,15 @@ public class PatientController : ControllerBase
 
     [HttpGet]
     [Authorize(Policy = "Patient")]
-    [Route("GetAppointmentDetails/{docId}")]
+    [Route("GetAppointmentDetails/{AppointmentId}")]
 
-    public ActionResult<AppointmentDetailsDTO> GetAppointmentDetailsOfSpecificDoc(string docId)
+    public ActionResult<AppointmentDetailsDTO> GetAppointmentDetailsOfSpecificDoc(string AppointmentId)
     {
         string? patientId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (patientId == null)
             return Unauthorized(new { message = "Please login" });
 
-        AppointmentDetailsDTO? appointmentDetailsDTO = _patientService.GetAppointmentDetailsOfSpecificDoc(patientId, docId);
+        AppointmentDetailsDTO? appointmentDetailsDTO = _patientService.GetAppointmentDetailsOfSpecificDoc(AppointmentId, patientId);
         if (appointmentDetailsDTO != null)
             return appointmentDetailsDTO;
 

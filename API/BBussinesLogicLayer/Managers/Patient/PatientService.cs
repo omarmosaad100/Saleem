@@ -199,9 +199,9 @@ namespace BBussinesLogicLayer.Managers.Patient
             return DoctorsInfoDto;
         }
 
-        public AppointmentDetailsDTO? GetAppointmentDetailsOfSpecificDoc(string patientId, string DocID)
+        public AppointmentDetailsDTO? GetAppointmentDetailsOfSpecificDoc(string AppointmentId , string Patientid)
         {
-            AppointmentDetails? appointmentDetails = _patientRepo.GetAppointmentDetailsOfSpecificDoc(patientId, DocID);
+            AppointmentDetails? appointmentDetails = _patientRepo.GetAppointmentDetailsOfSpecificDoc(AppointmentId , Patientid);
 
             if(appointmentDetails is null)
             {
@@ -219,7 +219,7 @@ namespace BBussinesLogicLayer.Managers.Patient
 
         public HashSet<PatientIllnessDTO>? GetAllAppointments(string id)
         {
-            var appointment = _patientRepo.GetAllAppointments(id);
+            var appointment = _patientRepo.GetAllIllnesses(id);
             HashSet<PatientIllnessDTO>? appointmentDetailsDTOs = new HashSet<PatientIllnessDTO>();
             if (appointment != null)
             {

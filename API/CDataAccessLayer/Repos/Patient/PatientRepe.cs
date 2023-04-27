@@ -79,14 +79,23 @@ namespace CDataAccessLayer.Repos.Patient
                 .ToHashSet();
         }
 
-
-        public Data.Models.AppointmentDetails? GetAppointmentDetailsOfSpecificDoc(string patientId, string DocID)
+        //old one ---
+        //public Data.Models.AppointmentDetails? GetAppointmentDetailsOfSpecificDoc(string patientId, string DocID)
+        //{
+        //    return _context.Set<Data.Models.AppointmentDetails>()
+        //        .Include(d => d.Doctor)
+        //        .Include(d => d.DescribedDrugs)
+        //        .Include(d => d.DiagnosedIssues)
+        //        .Where(a => a.PId == patientId && a.DId == DocID)
+        //        .FirstOrDefault();
+        //}
+        public Data.Models.AppointmentDetails? GetAppointmentDetailsOfSpecificDoc(string AppointmentID ,string atientId)
         {
             return _context.Set<Data.Models.AppointmentDetails>()
                 .Include(d => d.Doctor)
-                .Include(d => d.DescribedDrugs)
-                .Include(d => d.DiagnosedIssues)
-                .Where(a => a.PId == patientId && a.DId == DocID)
+                .Include(a => a.DescribedDrugs)
+                .Include(a => a.DiagnosedIssues)
+                .Where(p => p.Id.ToString() == AppointmentID&& p.PId == atientId)
                 .FirstOrDefault();
         }
 
@@ -106,16 +115,16 @@ namespace CDataAccessLayer.Repos.Patient
             return _context.SaveChanges();
 
         }
-        public HashSet<AppointmentDetails>? GetAllAppointments(string patientId)
+        public HashSet<AppointmentDetails>? GetAllIllnesses(string patientId)
         {
 
-                
+
 
             HashSet<AppointmentDetails>? appointmentDetails = _context.AppointmentDetails
                 .Include(p => p.DiagnosedIssues)
                 .Where(p => p.PId == patientId)
                 .ToHashSet();
-            return appointmentDetails; 
+            return appointmentDetails;
         }
 
     }

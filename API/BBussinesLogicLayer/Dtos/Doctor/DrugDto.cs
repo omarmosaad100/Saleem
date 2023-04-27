@@ -11,6 +11,7 @@ namespace BBussinesLogicLayer.Dtos.Doctor
 {
     public class DrugDto
     {
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public DrugTakingMethod TakingMethod { get; set; }
         public virtual HashSet<string> ConflictedIssues { get; set; }

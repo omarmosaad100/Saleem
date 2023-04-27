@@ -13,7 +13,7 @@ namespace BBussinesLogicLayer.Dtos.Doctor
 
         public string Comment { get; set; } = string.Empty;
 
-        public string DId { get; set; }
+        public string DoctorName { get; set; }
 
         public HashSet<string> DescribedDrugs { get; set; }
         public HashSet<string> DiagnosedIssues { get; set; }

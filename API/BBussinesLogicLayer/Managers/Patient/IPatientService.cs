@@ -24,7 +24,7 @@ namespace BBussinesLogicLayer.Managers.Patient
 
         public HashSet<DoctorDataDTO>? GetVisitedDoctorsInfo(string patientId);
 
-        public AppointmentDetailsDTO? GetAppointmentDetailsOfSpecificDoc(string patientId, string DocID);
+        public AppointmentDetailsDTO? GetAppointmentDetailsOfSpecificDoc(string AppointmentId, string Patientid);
 
         public int? RateDoctor(string patientId, string doctorId, decimal rating);
 

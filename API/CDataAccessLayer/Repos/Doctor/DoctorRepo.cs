@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,6 +23,16 @@ namespace CDataAccessLayer.Repos
             if (appointmentDetails != null)
             { 
                 _context.AppointmentDetails.Add(appointmentDetails);
+
+                var patient = _context.patients.Include(p => p.Issues).FirstOrDefault(p => p.Id == appointmentDetails.PId);
+
+                var patientIssues = patient.Issues;
+
+                foreach (var issue in appointmentDetails.DiagnosedIssues)
+                {
+                    patientIssues.Add(issue);
+                }
+
                 return _context.SaveChanges();
             }
             return 0;
@@ -83,6 +94,7 @@ namespace CDataAccessLayer.Repos
             //create a dictionary of hashsets.. hashset for each issue to be avoided
             HashSet<HashSet<Drug>> ConflictsHashSets = new();
 
+
             foreach (var issue in patientIssues)
             {
                 HashSet<Drug> conflictingDrugs = new ();
@@ -110,9 +122,11 @@ namespace CDataAccessLayer.Repos
             var RecommendedDrug = leastDrugCounter.Key;
 
             //if conflicts must exist, add them to the patient's issues
+            //come back here, consider removing those lines
             if (leastDrugCounter.Value > 0)
                 foreach (var issue in RecommendedDrug.ConflictedIssues)
                     patient.Issues.Add(issue);
+
 
             //return the treated issue
             patientIssues.Add(ToBeCuredIssue);
@@ -122,6 +136,21 @@ namespace CDataAccessLayer.Repos
             return RecommendedDrug;
 
             //make the issues column in db unique
+        }
+
+        public HashSet<Issue> GetAllIssues()
+        {
+            return _context.Issues.ToHashSet();
+        }
+
+        public string GetPidByNid(string nid)
+        {
+            return _context.patients.FirstOrDefault(p => p.NationalId == nid).Id;
+        }
+
+        public HashSet<Issue> GetIssuesByPid(string pid)
+        {
+            return _context.patients.Include(p => p.Issues).FirstOrDefault(p => p.Id == pid).Issues.ToHashSet();
         }
     }
 }
