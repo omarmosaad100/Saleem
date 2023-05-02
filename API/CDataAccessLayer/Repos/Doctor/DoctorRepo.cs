@@ -13,7 +13,7 @@ namespace CDataAccessLayer.Repos
     public class DoctorRepo: IDoctorRepo
     {
         private readonly DataContext _context;
-
+    
         public DoctorRepo(DataContext context)
         {
             _context = context;
@@ -21,7 +21,8 @@ namespace CDataAccessLayer.Repos
         public int AddAppointment(AppointmentDetails appointmentDetails)
         {
             if (appointmentDetails != null)
-            { 
+            {
+
                 _context.AppointmentDetails.Add(appointmentDetails);
 
                 var patient = _context.patients.Include(p => p.Issues).FirstOrDefault(p => p.Id == appointmentDetails.PId);
@@ -74,6 +75,7 @@ namespace CDataAccessLayer.Repos
 
         public Drug GetDrugRecommendation(string issueName, string pid)
         {
+
             // the patient we want to cure
             var patient = _context.patients
                 .Include(p => p.Issues)
@@ -84,12 +86,16 @@ namespace CDataAccessLayer.Repos
             //patient's issues to avoid conflicting while recommendation
             var patientIssues = patient.Issues;
 
+            var ToBeCuredIssue = _context.Issues
+                .Include(i => i.TreatmentDrugs)
+                    .ThenInclude(i => i.ConflictedIssues)
+                .FirstOrDefault(i => i.Name == issueName);
+
             //remove the issue we wanna cure
-            var ToBeCuredIssue = patientIssues.FirstOrDefault(i => i.Name == issueName);
+            //var ToBeCuredIssue = patientIssues.FirstOrDefault(i => i.Name == issueName);
 
             //remove the treated issue temporarily
             patientIssues.Remove(ToBeCuredIssue);
-
 
             //create a dictionary of hashsets.. hashset for each issue to be avoided
             HashSet<HashSet<Drug>> ConflictsHashSets = new();
