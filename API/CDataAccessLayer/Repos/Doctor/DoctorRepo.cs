@@ -158,5 +158,21 @@ namespace CDataAccessLayer.Repos
         {
             return _context.patients.Include(p => p.Issues).FirstOrDefault(p => p.Id == pid).Issues.ToHashSet();
         }
+
+
+        public National? GetNational(string Id) => _context.nationalIds.FirstOrDefault(i => i.Id == Id);
+
+        public Guid? GetLicense(string Id)
+        {
+            var license = _context.licenses.FirstOrDefault(i => i.NationalId == Id);
+            if(license != null) return license.Id;
+            return null;
+        }
+        public int AddNewDoctor(Data.Models.Doctor doctor)
+        {
+            _context.Doctors.Add(doctor);
+            return _context.SaveChanges();
+
+        }
     }
 }

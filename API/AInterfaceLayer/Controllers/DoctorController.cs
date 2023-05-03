@@ -1,6 +1,8 @@
 ﻿using BBussinesLogicLayer.Dtos.Doctor;
+using BBussinesLogicLayer.Dtos.Patients;
 using BBussinesLogicLayer.Managers.Doctor;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
 
@@ -16,8 +18,17 @@ namespace AInterfaceLayer.Controllers
         {
             _doctorManager = doctorManager;
         }
-
         [HttpPost]
+        [Route("Register")]
+        public async Task<ActionResult> Register(DoctorRegisterDto patientRegisterDto)
+        {
+            IdentityResult result =await _doctorManager.CreateAccountAsync(patientRegisterDto);
+            if (!result.Succeeded)
+                return BadRequest(result.Errors);
+            return NoContent();
+
+        }
+            [HttpPost]
         [Route("AddAppointment")]
         public ActionResult AddAppointment(AppointmentDto appointmentDto)
         {
