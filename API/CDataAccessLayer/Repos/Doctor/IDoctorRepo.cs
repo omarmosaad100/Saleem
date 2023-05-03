@@ -10,8 +10,10 @@ namespace CDataAccessLayer.Repos
     public interface IDoctorRepo
     {
         //public HashSet<AppointmentDetails> GetAppointmentsByNid(int nid);
-        
+
         //public Doctor GetMyInformation(int did);
+        public National? GetNational(string Id);
+        public Guid? GetLicense(string Id);
 
         public int AddAppointment(AppointmentDetails appointmentDetails);
 
@@ -28,5 +30,7 @@ namespace CDataAccessLayer.Repos
         public string GetPidByNid(string nid);
 
         public HashSet<Issue> GetIssuesByPid(string pid);
+        public int AddNewDoctor(Data.Models.Doctor doctor);
+
     }
 }
