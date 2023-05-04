@@ -11,7 +11,7 @@ namespace BBussinesLogicLayer.Dtos.Doctor
         public string UserNationalId { get; set; }
         public string Password { get; set; }
     }
-    public record TokenDto(string Token, DateTime Expiry, string? Role, string username);
+    public record DoctorTokenDto(string Token, DateTime Expiry, string? Role, string username);
 
 }
 
