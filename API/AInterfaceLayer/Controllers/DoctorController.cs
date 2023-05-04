@@ -1,10 +1,13 @@
 ﻿using BBussinesLogicLayer.Dtos.Doctor;
-using BBussinesLogicLayer.Dtos.Patients;
 using BBussinesLogicLayer.Managers.Doctor;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Text;
 
 namespace AInterfaceLayer.Controllers
 {
@@ -12,23 +15,71 @@ namespace AInterfaceLayer.Controllers
     [ApiController]
     public class DoctorController : ControllerBase
     {
+        private readonly IConfiguration _configuration;
         private readonly IDoctorManager _doctorManager;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public DoctorController(IDoctorManager doctorManager)
+
+        public DoctorController(IDoctorManager doctorManager, UserManager<IdentityUser> userManager, IConfiguration configuration)
         {
             _doctorManager = doctorManager;
+            _userManager = userManager;
+            _configuration = configuration;
         }
         [HttpPost]
         [Route("Register")]
-        public async Task<ActionResult> Register(DoctorRegisterDto patientRegisterDto)
+        public async Task<ActionResult> Register(DoctorRegisterDto doctorRegisterDto)
         {
-            IdentityResult result =await _doctorManager.CreateAccountAsync(patientRegisterDto);
+            IdentityResult result =await _doctorManager.CreateAccountAsync(doctorRegisterDto);
             if (!result.Succeeded)
                 return BadRequest(result.Errors);
             return NoContent();
 
         }
-            [HttpPost]
+        [HttpPost]
+        [Route("Login")]
+        public async Task<ActionResult<TokenDto>> Login(DoctorLoginDto doctorLoginDto)
+        {
+            var user = await _userManager.FindByNameAsync(doctorLoginDto.UserNationalId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var isAuthenitcated = await _userManager.CheckPasswordAsync(user, doctorLoginDto.Password);
+            if (!isAuthenitcated)
+            {
+                return Unauthorized();
+            }
+
+            var claimsList = await _userManager.GetClaimsAsync(user);
+
+            var secretKeyString = _configuration.GetValue<string>("SecretKey") ?? string.Empty;
+            var secretKeyInBytes = Encoding.ASCII.GetBytes(secretKeyString);
+            var secretKey = new SymmetricSecurityKey(secretKeyInBytes);
+
+            //Combination SecretKey, HashingAlgorithm
+            var siginingCreedentials = new SigningCredentials(secretKey,
+                SecurityAlgorithms.HmacSha256Signature);
+
+            var expiry = DateTime.Now.AddDays(4);
+
+            var token = new JwtSecurityToken(
+                claims: claimsList,
+                expires: expiry,
+                signingCredentials: siginingCreedentials);
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var tokenString = tokenHandler.WriteToken(token);
+
+            var roleClaim = token.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
+            var role = roleClaim?.Value;
+            var username = user.UserName;
+
+            return new TokenDto(tokenString, expiry, role, username);
+        }
+
+        [HttpPost]
         [Route("AddAppointment")]
         public ActionResult AddAppointment(AppointmentDto appointmentDto)
         {
