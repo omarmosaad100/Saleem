@@ -38,7 +38,7 @@ namespace AInterfaceLayer.Controllers
         }
         [HttpPost]
         [Route("Login")]
-        public async Task<ActionResult<TokenDto>> Login(DoctorLoginDto doctorLoginDto)
+        public async Task<ActionResult<DoctorTokenDto>> Login(DoctorLoginDto doctorLoginDto)
         {
             var user = await _userManager.FindByNameAsync(doctorLoginDto.UserNationalId);
             if (user == null)
@@ -76,7 +76,7 @@ namespace AInterfaceLayer.Controllers
             var role = roleClaim?.Value;
             var username = user.UserName;
 
-            return new TokenDto(tokenString, expiry, role, username);
+            return new DoctorTokenDto(tokenString, expiry, role, username);
         }
 
         [HttpPost]
