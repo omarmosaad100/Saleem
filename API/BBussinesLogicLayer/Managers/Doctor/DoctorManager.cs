@@ -1,13 +1,17 @@
 ﻿using AutoMapper;
 using BBussinesLogicLayer.Dtos.Admin;
 using BBussinesLogicLayer.Dtos.Doctor;
+using BBussinesLogicLayer.Dtos.Patients;
+using BBussinesLogicLayer.Managers.Patient;
 using CDataAccessLayer.Data;
 using CDataAccessLayer.Data.Models;
 using CDataAccessLayer.Repos;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,14 +21,18 @@ namespace BBussinesLogicLayer.Managers.Doctor
     public class DoctorManager: IDoctorManager
     {
         private readonly IDoctorRepo _doctorRepo;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IMapper _mapper;
         private readonly DataContext _context;
 
-        public DoctorManager(IDoctorRepo doctorRepo, IMapper mapper, DataContext context) 
+        public DoctorManager(IDoctorRepo doctorRepo, IMapper mapper, DataContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager) 
         {
             _doctorRepo = doctorRepo;
             _mapper = mapper;
             _context = context;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
         public int AddAppointment(AppointmentDto appointmentDto)
         {
@@ -129,5 +137,74 @@ namespace BBussinesLogicLayer.Managers.Doctor
 
             return displayedIssues;
         }
+
+        async Task<IdentityResult> IDoctorManager.CreateAccountAsync(DoctorRegisterDto doctorRegisterDto)
+        {
+
+
+            var NationalIdSelcted = _doctorRepo.GetNational(doctorRegisterDto.NationalID);
+            IdentityResult result2 = new();
+            if (NationalIdSelcted == null)
+            {
+                var errors = new List<IdentityError>();
+                errors.Add(new IdentityError { Code = "National Id", Description = "This National ID don’t exist in our Database" });
+                return IdentityResult.Failed(errors.ToArray());
+            }
+            //I want to check if this nationalID match Lisence , so I will get the  Lisence by national ID
+            var theRequiredLisence = _doctorRepo.GetLicense(NationalIdSelcted.Id);
+
+            if (doctorRegisterDto.License != theRequiredLisence)
+            {
+                var errors = new List<IdentityError>();
+                errors.Add(new IdentityError { Code = "License", Description = "This License dosn't math the national id" });
+                return IdentityResult.Failed(errors.ToArray());
+
+            }
+
+            var doctorIdentityToAdd = new IdentityUser()
+            {
+                UserName = doctorRegisterDto.NationalID,
+                Email = doctorRegisterDto.Email,
+                PhoneNumber = doctorRegisterDto.Mobile
+            };
+
+            IdentityResult result = await _userManager.CreateAsync(doctorIdentityToAdd, doctorRegisterDto.Password);
+            if (!result.Succeeded)
+            {
+                return result;
+            }
+
+            var roleExists = await _roleManager.RoleExistsAsync(UserRoles.Doctor);
+            if (!roleExists)
+            {
+                var newRole = new IdentityRole(UserRoles.Doctor);
+                await _roleManager.CreateAsync(newRole);
+            }
+
+            await _userManager.AddToRoleAsync(doctorIdentityToAdd, UserRoles.Doctor);
+
+            CDataAccessLayer.Data.Models.Doctor doctorToAdd = new()
+            {
+                Id = doctorIdentityToAdd.Id,
+                User = doctorIdentityToAdd,
+                LicenseId= doctorRegisterDto.License,
+                Specialization=doctorRegisterDto.Specialization,
+                Name = doctorRegisterDto.Name,
+                Gender = doctorRegisterDto.Gender
+            };
+            var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.NameIdentifier, doctorToAdd.Id),
+            new Claim(ClaimTypes.Role, UserRoles.Doctor)
+        };
+
+            await _userManager.AddClaimsAsync(doctorIdentityToAdd, claims);
+            //_dbContext.patients.Add(patientToAdd);
+            //await _dbContext.SaveChangesAsync();
+            _doctorRepo.AddNewDoctor(doctorToAdd);
+            return result;
+        }
+
+
     }
 }

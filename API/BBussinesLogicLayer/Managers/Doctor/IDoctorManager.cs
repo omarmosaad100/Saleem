@@ -1,5 +1,7 @@
 ﻿using BBussinesLogicLayer.Dtos.Admin;
 using BBussinesLogicLayer.Dtos.Doctor;
+using BBussinesLogicLayer.Dtos.Patients;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -12,6 +14,8 @@ namespace BBussinesLogicLayer.Managers.Doctor
 {
     public interface IDoctorManager
     {
+        Task<IdentityResult> CreateAccountAsync(DoctorRegisterDto doctorRegisterDto);
+
         public int AddAppointment(AppointmentDto appointmentDto);
         public HashSet<DisplayedAppointmentDto> GetAppointmentsByNid(string nid);
         public DoctorProfileDto GetDoctorProfileById(string did);
