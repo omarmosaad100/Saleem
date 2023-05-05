@@ -13,6 +13,7 @@ using BBussinesLogicLayer.Managers.Patient;
 using CDataAccessLayer.Repos.Patient;
 using BBussinesLogicLayer.Managers.Home;
 using CDataAccessLayer.Repos.Home;
+using SaleemGPT_Trial;
 
 namespace AInterfaceLayer
 {
@@ -122,7 +123,9 @@ namespace AInterfaceLayer
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             #endregion
 
-       
+
+            builder.Services.AddSingleton<GPTService>();
+
 
             var app = builder.Build();
 
