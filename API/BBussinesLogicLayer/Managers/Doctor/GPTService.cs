@@ -15,7 +15,7 @@ namespace SaleemGPT_Trial
 
         private async Task InitializeAsync()
         {
-            OpenAI_API.APIAuthentication.Default = new OpenAI_API.APIAuthentication("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");
+            OpenAI_API.APIAuthentication.Default = new OpenAI_API.APIAuthentication("00000");
             var api = new OpenAI_API.OpenAIAPI();
 
             Chat = api.Chat.CreateConversation(new ChatRequest()
