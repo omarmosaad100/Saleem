@@ -129,9 +129,9 @@ namespace CDataAccessLayer.Repos
 
             //if conflicts must exist, add them to the patient's issues
             //come back here, consider removing those lines
-            if (leastDrugCounter.Value > 0)
-                foreach (var issue in RecommendedDrug.ConflictedIssues)
-                    patient.Issues.Add(issue);
+            //if (leastDrugCounter.Value > 0)
+            //    foreach (var issue in RecommendedDrug.ConflictedIssues)
+            //        patient.Issues.Add(issue);
 
 
             //return the treated issue

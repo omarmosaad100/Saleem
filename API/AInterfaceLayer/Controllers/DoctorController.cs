@@ -82,13 +82,13 @@ namespace AInterfaceLayer.Controllers
 
         [HttpPost]
         [Route("AddAppointment")]
-        [EnableCors("AllowOrigin")]
         public ActionResult AddAppointment(AppointmentDto appointmentDto)
         {
             var result = _doctorManager.AddAppointment(appointmentDto);
-
             if (result == 0)
                 return BadRequest();
+
+            Response.Headers.Add("Access-Control-Allow-Origin", "*");
             return Ok();
         }
 
