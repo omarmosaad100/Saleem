@@ -116,7 +116,7 @@ namespace AInterfaceLayer
             #endregion
 
             #region CORS
-            //builder.Services.AddCors();
+            builder.Services.AddCors();
             #endregion
 
             #region AutoMapper
@@ -124,17 +124,17 @@ namespace AInterfaceLayer
             #endregion
 
             #region Cors
-            builder.Services.AddCors(options =>
-            {
-                options.AddPolicy("AllowAll", builder =>
-                {
-                    builder.AllowAnyOrigin()
-                   .AllowAnyHeader()
-                   .AllowAnyMethod()
-                   .AllowCredentials();
+            //builder.Services.AddCors(options =>
+            //{
+            //    options.AddPolicy("AllowAll", builder =>
+            //    {
+            //        builder.AllowAnyOrigin()
+            //       .AllowAnyHeader()
+            //       .AllowAnyMethod()
+            //       .AllowCredentials();
 
-                });
-            });
+            //    });
+            //});
             #endregion
 
             builder.Services.AddSingleton<GPTService>();
@@ -142,7 +142,7 @@ namespace AInterfaceLayer
 
             var app = builder.Build();
 
-            app.UseCors("AllowAll");
+            //app.UseCors("AllowAll");
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -161,10 +161,10 @@ namespace AInterfaceLayer
             //.AllowAnyMethod()
             //.WithOrigins("/*http://localhost:4200*/"));
 
-            //app.UseCors(policyBuilder => policyBuilder
-            //.AllowAnyOrigin()
-            //.AllowAnyHeader()
-            //.AllowAnyMethod());
+            app.UseCors(policyBuilder => policyBuilder
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod());
 
 
 
