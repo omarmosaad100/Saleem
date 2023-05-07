@@ -116,7 +116,7 @@ namespace AInterfaceLayer
             #endregion
 
             #region CORS
-            builder.Services.AddCors();
+            //builder.Services.AddCors();
             #endregion
 
             #region AutoMapper
@@ -130,7 +130,9 @@ namespace AInterfaceLayer
                 {
                     builder.WithOrigins("http://localhost:4200")
                    .AllowAnyHeader()
-                   .AllowAnyMethod();
+                   .AllowAnyMethod()
+                   .AllowCredentials();
+
                 });
             });
             #endregion
@@ -139,6 +141,8 @@ namespace AInterfaceLayer
 
 
             var app = builder.Build();
+
+            app.UseCors("AllowAll");
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -162,7 +166,6 @@ namespace AInterfaceLayer
             //.AllowAnyHeader()
             //.AllowAnyMethod());
 
-            app.UseCors("AllowAll");
 
 
             #endregion
