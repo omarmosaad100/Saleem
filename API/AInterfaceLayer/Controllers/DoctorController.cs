@@ -75,8 +75,8 @@ namespace AInterfaceLayer.Controllers
             var roleClaim = token.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
             var role = roleClaim?.Value;
             var username = user.UserName;
-
-            return new DoctorTokenDto(tokenString, expiry, role, username);
+            
+            return new DoctorTokenDto(tokenString, expiry, role, username, user.Id);
         }
 
         [HttpPost]
