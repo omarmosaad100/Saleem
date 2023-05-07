@@ -1,5 +1,6 @@
 ﻿using BBussinesLogicLayer.Dtos.Doctor;
 using BBussinesLogicLayer.Managers.Doctor;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -81,6 +82,7 @@ namespace AInterfaceLayer.Controllers
 
         [HttpPost]
         [Route("AddAppointment")]
+        [EnableCors("AllowOrigin")]
         public ActionResult AddAppointment(AppointmentDto appointmentDto)
         {
             var result = _doctorManager.AddAppointment(appointmentDto);

@@ -29,7 +29,7 @@ namespace AInterfaceLayer
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            
+
 
             #region Database
             builder.Services.AddDbContext<DataContext>(options =>
@@ -112,7 +112,7 @@ namespace AInterfaceLayer
                     policy.RequireClaim(ClaimTypes.Role, "Doctor"));
             });
 
-            
+
             #endregion
 
             #region CORS
@@ -123,6 +123,17 @@ namespace AInterfaceLayer
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             #endregion
 
+            #region Cors
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowOrigin", builder =>
+                {
+                    builder.WithOrigins("http://localhost:4200")
+                   .AllowAnyHeader()
+                   .AllowAnyMethod();
+                });
+            });
+            #endregion
 
             builder.Services.AddSingleton<GPTService>();
 
@@ -144,12 +155,16 @@ namespace AInterfaceLayer
             //app.UseCors(policyBuilder => 
             //policyBuilder.AllowAnyHeader()
             //.AllowAnyMethod()
-            //.WithOrigins("http://localhost:4200"));
+            //.WithOrigins("/*http://localhost:4200*/"));
 
-            app.UseCors(policyBuilder => policyBuilder
-            .AllowAnyOrigin()
-            .AllowAnyHeader()
-            .AllowAnyMethod());
+            //app.UseCors(policyBuilder => policyBuilder
+            //.AllowAnyOrigin()
+            //.AllowAnyHeader()
+            //.AllowAnyMethod());
+
+            app.UseCors("AllowAll");
+
+
             #endregion
 
             app.MapControllers();
