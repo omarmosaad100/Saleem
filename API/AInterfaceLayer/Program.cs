@@ -126,7 +126,7 @@ namespace AInterfaceLayer
             #region Cors
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy("AllowOrigin", builder =>
+                options.AddPolicy("AllowAll", builder =>
                 {
                     builder.AllowAnyOrigin()
                    .AllowAnyHeader()
