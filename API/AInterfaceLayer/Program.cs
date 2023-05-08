@@ -30,6 +30,18 @@ namespace AInterfaceLayer
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                                  policy =>
+                                  {
+                                      policy.WithOrigins("http://localhost:4200")
+                                      .AllowAnyHeader()
+                                      .AllowAnyMethod(); ;
+                                  });
+            });
+
             #region Database
             builder.Services.AddDbContext<DataContext>(options =>
             {
@@ -102,7 +114,7 @@ namespace AInterfaceLayer
             #endregion
 
             #region CORS
-            builder.Services.AddCors();
+            //builder.Services.AddCors();
             #endregion
 
             #region AutoMapper
@@ -113,11 +125,11 @@ namespace AInterfaceLayer
 
             var app = builder.Build();
 
-            // Enable CORS
-            app.UseCors(builder => builder
-                .AllowAnyOrigin()
-                .AllowAnyHeader()
-                .AllowAnyMethod());
+            //// Enable CORS
+            //app.UseCors(builder => builder
+            //    .AllowAnyOrigin()
+            //    .AllowAnyHeader()
+            //    .AllowAnyMethod());
 
             if (app.Environment.IsDevelopment())
             {
@@ -126,6 +138,9 @@ namespace AInterfaceLayer
             }
 
             app.UseHttpsRedirection();
+
+            app.UseCors(MyAllowSpecificOrigins);
+
             app.UseAuthorization();
             app.MapControllers();
             app.Run();
