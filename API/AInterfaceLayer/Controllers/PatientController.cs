@@ -3,6 +3,7 @@ using BBussinesLogicLayer.Managers.Patient;
 using CDataAccessLayer.Data;
 using CDataAccessLayer.Data.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +14,7 @@ using System.Security.Claims;
 using System.Text;
 
 namespace AInterfaceLayer.Controllers;
-
+[EnableCors("_myAllowSpecificOrigins")]
 [Route("api/[controller]")]
 [ApiController]
 public class PatientController : ControllerBase

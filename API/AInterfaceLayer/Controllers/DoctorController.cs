@@ -12,8 +12,10 @@ using System.Text;
 
 namespace AInterfaceLayer.Controllers
 {
+    [EnableCors("_myAllowSpecificOrigins")]
     [Route("api/[controller]")]
     [ApiController]
+
     public class DoctorController : ControllerBase
     {
         private readonly IConfiguration _configuration;
@@ -82,7 +84,9 @@ namespace AInterfaceLayer.Controllers
 
         [HttpPost]
         [Route("AddAppointment")]
+
         public ActionResult AddAppointment(AppointmentDto appointmentDto)
+        
         {
             var result = _doctorManager.AddAppointment(appointmentDto);
             if (result == 0)

@@ -3,6 +3,7 @@ using BBussinesLogicLayer.Dtos.Admin;
 using BBussinesLogicLayer.Managers.Admin;
 using CDataAccessLayer.Data.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,8 @@ using Microsoft.CodeAnalysis.Elfie.Diagnostics;
 
 namespace AInterfaceLayer.Controllers
 {
+
+    [EnableCors("_myAllowSpecificOrigins")]
     [Route("api/[controller]")]
     [ApiController]
     public class AdminController : ControllerBase

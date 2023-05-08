@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BBussinesLogicLayer.Dtos.Patients
 {
-    public class PatientDoctorDrugsDTO
+    public class PatientDrugsDTO
     {
         // Name ,  TakingMethod ==> from Drugs Table
         public string Name { get; set; }

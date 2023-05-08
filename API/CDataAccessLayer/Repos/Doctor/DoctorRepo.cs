@@ -26,12 +26,29 @@ namespace CDataAccessLayer.Repos
                 _context.AppointmentDetails.Add(appointmentDetails);
 
                 var patient = _context.patients.Include(p => p.Issues).FirstOrDefault(p => p.Id == appointmentDetails.PId);
+                var PatientsDrug = _context.PatientsDrugs;
 
-                var patientIssues = patient.Issues;
+                var patientIssues = patient?.Issues;
+                var patientDrug = patient?.Drugs;
 
                 foreach (var issue in appointmentDetails.DiagnosedIssues)
                 {
-                    patientIssues.Add(issue);
+                    patientIssues?.Add(issue);
+                }
+
+                foreach (var drug in appointmentDetails.DescribedDrugs)
+                {
+                    var newPatientDrugs = new PatientsDrugs
+                    {
+                        DrugId= drug.Id,
+                        Dosage = "1",
+                        StartDate = DateTime.Now,
+                        EndDate = new DateTime (DateTime.Now.Year , DateTime.Now.Month,DateTime.Now.Day+7),
+                        TimesPerDay = 3,
+                        PatientId = appointmentDetails.PId
+                    };
+
+                    PatientsDrug?.Add(newPatientDrugs);
                 }
 
                 return _context.SaveChanges();
