@@ -8,10 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using BBussinesLogicLayer.Managers.Doctor;
 using BBussinesLogicLayer.Managers.Patient;
 using CDataAccessLayer.Repos.Patient;
-using CDataAccessLayer.Data.Models;
-using BBussinesLogicLayer.Dtos.Patients;
+using BBussinesLogicLayer.Managers.Home;
+using CDataAccessLayer.Repos.Home;
+using SaleemGPT_Trial;
 
 namespace AInterfaceLayer
 {
@@ -22,7 +24,8 @@ namespace AInterfaceLayer
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddControllers();
+            builder.Services.AddControllers().AddNewtonsoftJson(o => o.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -36,73 +39,66 @@ namespace AInterfaceLayer
 
             #region Repos
             builder.Services.AddScoped<IAdminRepo, AdminRepo>();
-            builder.Services.AddScoped<IPatientService, PatientService>();
+            builder.Services.AddScoped<IDoctorRepo, DoctorRepo>();
             builder.Services.AddScoped<IPatientRepo, PatientRepe>();
+            builder.Services.AddScoped<IHomeRepo, HomeRepo>();
             #endregion
 
             #region Identity Managers
-
-            //builder.Services.AddIdentity<PatientRegisterDto, IdentityRole>(options =>
-            //{
-            //    options.Password.Requireduniquechars = 3;
-            //    options.Password.Requireuppercase = false;
-            //    options.Password.Requirelowercase = false;
-            //    options.Password.Requirenonalphanumeric = false;
-
-            //    options.User.RequireUniqueEmail = true;
-            //})
-            //    .AddEntityFrameworkStores<DataContext>();
-
-            #endregion
-
-            #region Authentication
-
-            builder.Services.AddAuthentication(options =>
-            {
-                //Used Authentication Scheme
-                options.DefaultAuthenticateScheme = "CoolAuthentication";
-
-                //Used Challenge Authentication Scheme
-                options.DefaultChallengeScheme = "CoolAuthentication";
-            })
-                .AddJwtBearer("CoolAuthentication", options =>
-                {
-                    var secretKeyString = builder.Configuration.GetValue<string>("SecretKey") ?? string.Empty;
-                    var secretKeyInBytes = Encoding.ASCII.GetBytes(secretKeyString);
-                    var secretKey = new SymmetricSecurityKey(secretKeyInBytes);
-
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        IssuerSigningKey = secretKey,
-                        ValidateIssuer = false,
-                        ValidateAudience = false,
-                    };
-                });
-
-            #endregion
-
-            #region Authorization
-
-            builder.Services.AddAuthorization(options =>
-            {
-                options.AddPolicy("PatientData", policy => policy
-                    .RequireClaim(ClaimTypes.Role, UserRoles.Patient, UserRoles.Doctor));
-            });
-
-            #endregion
-
-            #region Managers
-            //builder.Services.AddScoped<IUsersManager , UsersManager>();
-
             builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-                    .AddEntityFrameworkStores<DataContext>()
-                    .AddDefaultTokenProviders();
+                .AddEntityFrameworkStores<DataContext>()
+                .AddDefaultTokenProviders();
 
             builder.Services.AddScoped<UserManager<IdentityUser>>();
             builder.Services.AddScoped<SignInManager<IdentityUser>>();
             builder.Services.AddScoped<RoleManager<IdentityRole>>();
+            #endregion
 
+            #region Managers
             builder.Services.AddScoped<IAdminManager, AdminManager>();
+            builder.Services.AddScoped<IPatientService, PatientService>();
+            builder.Services.AddScoped<IDoctorManager, DoctorManager>();
+            builder.Services.AddScoped<IHomeManager, HomeManager>();
+            #endregion
+
+            #region Authentication
+            builder.Services.AddAuthentication(options =>
+            {
+                //Used Authentication Scheme
+                options.DefaultAuthenticateScheme = "Authentication";
+
+                //Used Challenge Authentication Scheme
+                options.DefaultChallengeScheme = "Authentication";
+            })
+            .AddJwtBearer("Authentication", options =>
+            {
+                var secretKeyString = builder.Configuration.GetValue<string>("SecretKey") ?? string.Empty;
+                var secretKeyInBytes = Encoding.ASCII.GetBytes(secretKeyString);
+                var secretKey = new SymmetricSecurityKey(secretKeyInBytes);
+
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    IssuerSigningKey = secretKey,
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                };
+            });
+            #endregion
+
+            #region Authorization
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Patient", policy =>
+                    policy.RequireClaim(ClaimTypes.Role, "Patient")
+                );
+
+                options.AddPolicy("Admin", policy =>
+                    policy.RequireClaim(ClaimTypes.Role, "Admin")
+                );
+
+                options.AddPolicy("Doctor", policy =>
+                    policy.RequireClaim(ClaimTypes.Role, "Doctor"));
+            });
             #endregion
 
             #region CORS
@@ -113,10 +109,16 @@ namespace AInterfaceLayer
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             #endregion
 
+            builder.Services.AddSingleton<GPTService>();
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
+            // Enable CORS
+            app.UseCors(builder => builder
+                .AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod());
+
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -124,15 +126,8 @@ namespace AInterfaceLayer
             }
 
             app.UseHttpsRedirection();
-
             app.UseAuthorization();
-
-            #region CORS 
-            app.UseCors(policyBuilder => policyBuilder.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200"));
-            #endregion
-
             app.MapControllers();
-
             app.Run();
         }
     }
