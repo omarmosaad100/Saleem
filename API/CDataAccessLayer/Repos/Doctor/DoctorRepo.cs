@@ -41,10 +41,10 @@ namespace CDataAccessLayer.Repos
                     var newPatientDrugs = new PatientsDrugs
                     {
                         DrugId= drug.Id,
-                        Dosage = "1",
+                        Dosage = new Random().Next(1,3).ToString(),
                         StartDate = DateTime.Now,
                         EndDate = new DateTime (DateTime.Now.Year , DateTime.Now.Month,DateTime.Now.Day+7),
-                        TimesPerDay = 3,
+                        TimesPerDay = new Random().Next(1, 4),
                         PatientId = appointmentDetails.PId
                     };
 
