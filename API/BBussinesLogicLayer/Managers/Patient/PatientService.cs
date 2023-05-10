@@ -217,22 +217,21 @@ namespace BBussinesLogicLayer.Managers.Patient
         }
 
 
-        public HashSet<PatientIllnessDTO>? GetAllAppointments(string id)
+        public HashSet<PatientIllnessDTO>? GetAllIllnesses(string id)
         {
-            var appointment = _patientRepo.GetAllIllnesses(id);
-            HashSet<PatientIllnessDTO>? appointmentDetailsDTOs = new HashSet<PatientIllnessDTO>();
-            if (appointment != null)
+            var Illness = _patientRepo.GetAllIllnesses(id);
+            HashSet<PatientIllnessDTO>? PatientIllnessDTO = new HashSet<PatientIllnessDTO>();
+            if (Illness != null)
             {
-                foreach (var item in appointment)
+                foreach (var item in Illness)
                 {
-                    appointmentDetailsDTOs.Add(new PatientIllnessDTO()
+                    PatientIllnessDTO.Add(new PatientIllnessDTO()
                     {
-                        Specialization = item.Specialization,
-                        DiagnosedIssues = item.DiagnosedIssues,
+                        IssueName = item.Name
                     });
                 }
             }
-            return appointmentDetailsDTOs;
+            return PatientIllnessDTO;
         }
     }
 }

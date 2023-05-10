@@ -257,9 +257,9 @@ public class PatientController : ControllerBase
         if (patientId == null)
             return Unauthorized(new { message = "Please login" });
 
-        HashSet<PatientIllnessDTO>? AllAppointments = _patientService.GetAllAppointments(patientId);
-        if (AllAppointments != null)
-            return AllAppointments;
+        HashSet<PatientIllnessDTO>? AllIllnessesPatient = _patientService.GetAllIllnesses(patientId);
+        if (AllIllnessesPatient != null)
+            return AllIllnessesPatient;
 
         return BadRequest(new { message = "Patient doesn't have illnesses " });
     }

@@ -115,16 +115,16 @@ namespace CDataAccessLayer.Repos.Patient
             return _context.SaveChanges();
 
         }
-        public HashSet<AppointmentDetails>? GetAllIllnesses(string patientId)
+        public HashSet<Issue>? GetAllIllnesses(string patientId)
         {
 
 
 
-            HashSet<AppointmentDetails>? appointmentDetails = _context.AppointmentDetails
-                .Include(p => p.DiagnosedIssues)
-                .Where(p => p.PId == patientId)
-                .ToHashSet();
-            return appointmentDetails;
+            Data.Models.Patient? Patientsel = _context.patients.Include(p => p.Issues)
+                .FirstOrDefault(p => p.Id == patientId);
+
+            HashSet<Issue>? Issues = Patientsel?.Issues.ToHashSet();
+            return Issues;
         }
 
     }

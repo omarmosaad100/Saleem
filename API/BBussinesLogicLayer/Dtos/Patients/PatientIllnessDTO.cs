@@ -5,8 +5,7 @@ namespace BBussinesLogicLayer.Dtos.Patients;
 
 public class PatientIllnessDTO
 {
-    public Specialization Specialization { get; set; }
-
-    public virtual ICollection<Issue> DiagnosedIssues { get; set; } = new HashSet<Issue>();
+    //public Specialization specialization { get; set; }
+    public string IssueName { get; set; }
 
 }

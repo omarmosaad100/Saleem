@@ -28,7 +28,7 @@ namespace BBussinesLogicLayer.Managers.Patient
 
         public int? RateDoctor(string patientId, string doctorId, decimal rating);
 
-        public HashSet<PatientIllnessDTO>? GetAllAppointments(string id);
+        public HashSet<PatientIllnessDTO>? GetAllIllnesses(string id);
 
 
 
